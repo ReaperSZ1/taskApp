@@ -8,7 +8,7 @@
     const mongoose = require('mongoose')
     const path = require('path') 
     
-    const passport = require('passport'); // asd
+    const passport = require('passport');
     require('./config/auth')(passport)
     require('dotenv').config();
 
