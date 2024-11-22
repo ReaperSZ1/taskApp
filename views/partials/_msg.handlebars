@@ -1,0 +1,57 @@
+<!-- views/partials/msg.handlebars -->
+<style>
+    /* Estilos para o fundo, loader e mensagens */
+    body {
+        background-color: #302f2f;
+        overflow: hidden; /* Evita rolagem durante o loading */
+    }
+
+    /* Mensagens de sucesso e erro */
+    .alert {
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 16px;
+        font-weight: 500;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert-success {
+        background-color: #28a745;
+        border: 1px solid #218838;
+        color: #ffffff;
+        transition: background-color 0.3s, transform 0.3s ease-in-out;
+    }
+
+    .alert-danger {
+        text-align: center;
+        background-color: #811515;
+        color: #FFFFFF;
+        border-color: #797979;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .alert-success .close, .alert-danger .close {
+        color: #ffffff;
+        opacity: 0.7;
+    }
+
+    .alert-success .close:hover, .alert-danger .close:hover {
+        opacity: 1;
+    }
+</style>
+
+<!-- Mensagens Flash -->
+{{#if successMsg}}
+    <div id="successMsg" class="alert alert-success">
+        {{successMsg}}
+    </div>
+{{/if}}
+
+{{#if errorMsg}}
+    <div id="errorMsg" class="alert alert-danger">
+        {{errorMsg}}
+    </div>
+{{/if}}

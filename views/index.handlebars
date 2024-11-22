@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário de Tarefas</title>
+    <style>
+        /* Estilos gerais para o corpo da página */
+        body {
+            font-family: 'Arial', sans-serif; /* Personalize a fonte aqui */
+            background-color: #333; /* Cor de fundo mais escura para o corpo */
+            color: #f4f4f9; /* Cor do texto mais clara */
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            overflow: auto;
+        }
+
+        /* Estilo do título principal */
+        h1 {
+            margin-top: 20px;
+            font-size: 2rem; /* Personalize o tamanho da fonte */
+            color: #fff; /* Cor do título mais clara */
+        }
+
+        /* Contêiner do calendário */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            max-width: 700px;
+            margin: 20px auto;
+        }
+
+        /* Estilo de cada dia do calendário */
+        .day {
+            padding: 15px;
+            background-color: #444; /* Cor de fundo dos dias mais escura */
+            border: 1px solid #666; /* Borda dos dias mais escura */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Animação de transição */
+        }
+
+        /* Estilo de hover para os dias */
+        .day:hover {
+            background-color: #555; /* Cor de fundo ao passar o mouse mais escura */
+        }
+
+        /* Estilo para o dia atual */
+        .today {
+            background-color: #b30d0d; /* Cor vibrante para o dia atual */
+            color: white;
+        }
+
+        .today:hover {
+            background-color: #c92a2a; /* Cor vibrante para o dia atual */
+        }
+
+        /* Estilo para o dia selecionado */
+        .selected {
+            background-color: #1bb11b; /* Cor vibrante para o dia selecionado */
+            color: white;
+        }
+
+        .selected:hover {
+            background-color: #2ccf2c; /* Cor vibrante para o dia selecionado */
+        }
+
+
+        /* Estilo dos dias da semana (Dom, Seg, Ter, etc.) */
+        .day-name {
+            font-weight: bold;
+            padding: 10px;
+            background-color: #666; /* Cor de fundo dos dias da semana mais escura */
+            color: #fff; /* Cor do texto mais clara */
+            border-radius: 5px;
+        }
+
+        /* Botões de navegação */
+        .nav-buttons {
+            margin: 20px 0;
+        }
+
+        .nav-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 0 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #555; /* Cor de fundo dos botões mais escura */
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .nav-buttons button:hover {
+            background-color: #666; /* Cor de fundo ao passar o mouse mais escura */
+        }
+         .task-list h3 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            color: #fff; /* Cor do título das tarefas mais clara */
+        }
+         .task-list li {
+            padding: 8px;
+            border-bottom: 1px solid #666; /* Cor da borda das tarefas mais escura */
+        }
+
+        .task-list li:last-child {
+            border-bottom: none;
+        }
+        .task-list p {
+            color: #ccc; /* Cor do texto sem tarefas mais clara */
+        }
+        
+        /* Estilização dos itens da lista de tarefas */
+        .task-list {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #444; /* Fundo da lista de tarefas */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+        }
+
+        .task-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            text-align: center; /* Centraliza o texto */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background-color: #616161; /* Fundo das tarefas */
+            color: #fff;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            transition: background-color 0.3s;
+        }
+        .task-item:hover {
+            background-color: #585858; /* Fundo das tarefas */
+        }
+
+        /* Estilo do contêiner de lixeira */
+        .delete-container, .edit-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px; /* Ajuste a largura do bloco */
+            height: 30px; /* Ajuste a altura do bloco */
+            background-color: #494949; /* Fundo do bloco */
+            border-radius: 5px; /* Bordas arredondadas */
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px; /* Ajusta a distância entre os botões */
+        }
+
+        .delete-container:hover, .edit-container:hover {
+            background-color: #424242; /* Cor ao passar o mouse */
+        }
+
+        /* Botão de lixeira */
+        .delete-btn, .edit-btn {
+            margin-left: 7px;
+            background: rgb(75, 75, 75);
+            border: none;
+            color: #ff4c4c; /* Cor vermelha */
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            border-radius: 10px; /* Arredonda as bordas */
+            padding: 4px 6px; /* Adiciona espaçamento interno */
+        }
+        .delete-btn:hover, .edit-btn:hover {
+            background: rgb(59, 59, 59);
+        }
+
+
+
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 600px) {
+            .calendar {
+                grid-template-columns: repeat(4, 1fr); /* Muda o número de colunas para telas pequenas */
+                max-width: 90%;
+            }
+
+            .day {
+                padding: 10px;
+            }
+
+            .nav-buttons button {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 id="month-title">Calendário de Novembro 2024</h1>
+    
+    <!-- Botões de navegação entre os meses -->
+    <div class="nav-buttons">
+        <button onclick="changeMonth(-1)">Mês Anterior</button>
+        <button onclick="changeMonth(1)">Próximo Mês</button>
+    </div>
+    
+    <!-- Calendário -->
+    <div id="calendar" class="calendar"></div>
+
+    {{#if isLoggedIn}}
+        {{!-- Lista de tarefas --}}
+        <div class="task-list" id="task-list">
+            <h3 id="task-list-title">Lista de Tarefas</h3>
+            <p id="p">Aqui estão suas tarefas:</p>
+            <ul id="task-items"></ul>
+        </div>
+    {{else}}
+        <p>Por favor, faça login para ver suas tarefas.</p>
+    {{/if}}
+
+    <script> 
+        let currentYear = new Date().getFullYear(); // Ano atual
+        let currentMonth = new Date().getMonth(); // Mês atual (0-11)
+        let currentDay = new Date().getDate(); // Dia atual
+        let selectedDay = null; // Armazena o dia selecionado
+
+        const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+        const monthNames = [
+            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ];
+
+        // Função para gerar o calendário
+        function generateCalendar() {
+            const calendarElement = document.getElementById('calendar');
+
+            // Primeiro dia do mês atual
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const firstDayOfWeek = firstDay.getDay(); // Dia da semana do primeiro dia (0=Domingo, 6=Sábado)
+            
+            // Último dia do mês atual
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const totalDays = lastDay.getDate(); // Total de dias no mês atual
+
+            // Preencher o calendário com os dias da semana
+            let daysHtml = [];
+            
+            // Adicionar os dias da semana como cabeçalho
+            daysOfWeek.forEach(day => {
+                daysHtml.push(`<div class="day-name">${day}</div>`);
+            });
+            
+            // Adicionar espaços em branco para os dias antes do primeiro dia
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                daysHtml.push('<div class="day"></div>'); // Preenche os espaços vazios antes do primeiro dia
+            }
+
+            // Adicionar os dias do mês
+            for (let day = 1; day <= totalDays; day++) {
+                // Verifica se o dia é o dia atual e adiciona uma classe especial para destacá-lo
+                const isToday = day === currentDay ? 'today' : '';
+                const isSelected = day === selectedDay ? 'selected' : ''; // Verifica se o dia foi selecionado
+                daysHtml.push(`
+                    <div class="day ${isToday} ${isSelected}" onclick="showTasks(${day})">
+                        ${day}
+                    </div>
+                `); // Adiciona cada dia como uma célula clicável
+            }
+            calendarElement.innerHTML = daysHtml.join(''); // Preenche o calendário com os dias
+        }
+
+        // Função para exibir as tarefas do dia selecionado
+        function showTasks(day) {
+            // Armazena o dia selecionado e atualiza a visualização do calendário
+            selectedDay = day;
+            generateCalendar();
+
+            // Atualiza o título da lista de tarefas
+            const taskListTitle = document.getElementById('task-list-title');
+            const monthName = monthNames[currentMonth];
+            const year = currentYear;
+            taskListTitle.textContent = `Lista de Tarefas para o dia ${day}, de ${monthName}, de ${year}`;
+
+            // Formata a data desejada (ajuste conforme necessário)
+            const selectedDate = new Date(currentYear, currentMonth, day); // Criando o objeto Date
+
+            // Formata a data para o formato ISO 8601 (como 2024-11-15T19:37:00.000Z)
+            const isoDate = selectedDate.toISOString();
+
+            // Fazendo requisição para lista as tarefas
+            fetch(`/tarefas?data=${isoDate}`)
+                .then(response => response.json())
+                .then(tasks => {
+                    const taskList = document.getElementById('task-items');
+                    taskList.innerHTML = ''; // Limpa tarefas anteriores
+
+                    // Ordenar tarefas por hora (crescente)
+                    tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                    if (tasks.length > 0) {
+                        tasks.forEach(task => {
+                            // Criar item de tarefa
+                            const taskItem = document.createElement('li');
+                            taskItem.classList.add('task-item');
+                            taskItem.style.display = 'flex'; // Ativa layout flexível
+                            taskItem.style.alignItems = 'center'; // Alinha verticalmente
+                            taskItem.style.justifyContent = 'space-between'; // Espaço entre os itens
+
+                            // Exibir horário no canto esquerdo
+                            const taskTime = document.createElement('span');
+                            const taskDate = new Date(task.date);
+                            taskTime.textContent = taskDate.toLocaleTimeString('pt-BR', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                            taskTime.style.marginRight = 'auto'; // Posiciona à esquerda
+                            taskTime.style.fontWeight = 'bold'; // Destaque para o horário
+
+                            taskItem.appendChild(taskTime);
+
+                            // Exibir título da tarefa (centralizado)
+                            const taskText = document.createElement('span');
+                            taskText.textContent = task.title;
+
+                            // Estilizar para centralizar o texto
+                            taskText.style.textAlign = 'center'; // Centraliza internamente
+                            taskText.style.flex = '1'; // Permite ocupar o espaço disponível
+                            taskText.style.margin = '0 auto'; // Centraliza horizontalmente
+
+                            taskItem.appendChild(taskText);
+
+                            // Formulário de exclusão
+                            const deleteForm = document.createElement('form');
+                            deleteForm.action = `/tarefa/deletar`;
+                            deleteForm.method = 'POST';
+                            deleteForm.classList.add('delete-form');
+
+                            const methodInput = document.createElement('input');
+                            methodInput.type = 'hidden';
+                            methodInput.name = 'token';
+                            methodInput.value = task.token;
+
+                            deleteForm.appendChild(methodInput);
+
+                            const deleteBtn = document.createElement('button');
+                            deleteBtn.classList.add('delete-btn');
+                            deleteBtn.type = 'submit';
+                            deleteBtn.innerHTML = '🗑️';
+
+                            deleteForm.appendChild(deleteBtn);
+                            taskItem.appendChild(deleteForm);
+
+                            // Formulário de edição
+                            const editForm = document.createElement('form');
+                            editForm.action = `/tarefa/editar/${task.token}`;
+                            editForm.method = 'get';
+                            editForm.classList.add('edit-form');
+
+                            const editBtn = document.createElement('button');
+                            editBtn.classList.add('edit-btn');
+                            editBtn.type = 'submit';
+                            editBtn.innerHTML = '✏️';
+                            
+                            editForm.appendChild(editBtn);
+                            taskItem.appendChild(editForm);
+
+                            // Adicionar tarefa na lista
+                            taskList.appendChild(taskItem);
+
+                            // Confirmar exclusão
+                            document.querySelectorAll('.delete-form').forEach(form => {
+                                form.addEventListener('submit', function (event) {
+                                    event.preventDefault(); // Previne o envio imediato do formulário
+
+                                    const confirmDelete = confirm("Tem certeza que deseja deletar esta tarefa?");
+                                    if (confirmDelete) {
+                                        form.submit(); // Envia o formulário para a rota especificada no atributo `action`
+                                    }
+                                });
+                            });
+                        });
+                    } else {
+                        document.querySelector('#p').innerHTML = ''
+                        taskList.innerHTML = '<p>Sem tarefas para este dia.</p>';
+                    }
+                }).catch(error => console.error('Erro ao buscar tarefas:', error));
+        }
+
+        // Função para atualizar o título do mês
+        function updateMonthTitle() {
+            const monthTitle = document.getElementById('month-title');
+            monthTitle.textContent = `Calendário de ${monthNames[currentMonth]} ${currentYear}`;
+        }
+
+        // Função para mudar o mês
+        function changeMonth(offset) {
+            currentMonth += offset;
+            // caso mude de ano
+            if (currentMonth < 0) {
+                currentMonth = 11; // mês atual recebe dezembro
+                currentYear--; // Se o mês for menor que 0, volta para dezembro e subtrai 1 do ano
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++; // Se o mês for maior que 11, volta para janeiro e adiciona 1 ao ano
+            }
+            updateMonthTitle(); // Atualiza o título do mês
+            generateCalendar(); // Gera o calendário para o novo mês
+        }
+
+        // Inicialização
+        updateMonthTitle(); // Atualiza o título do mês
+        generateCalendar(); // Gera o calendário
+        showTasks(currentDay); // Exibe as tarefas do dia atual
+    </script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<style>
+   /* Paleta de cores cinzas */
+    body {
+        background-color: #2b2b2b;
+        color: #d3d3d3;
+        font-family: Arial, sans-serif;
+        overflow: auto;
+    }
+
+    h3 {
+        color: #e0e0e0;
+        margin-bottom: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .card {
+        background-color: #333333;
+        border: 1px solid #4d4d4d;
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+        padding: 25px;
+        margin: 20px auto;
+        width: 100%;
+        max-width: 450px;
+        color: white;
+    }
+
+    .form-control, select, textarea {
+        text-align: center;
+        background-color: #3a3a3a;
+        color: #d3d3d3;
+        border: 1px solid #5a5a5a;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        padding: 8px;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    #title, #description {
+        text-align: left;
+    }
+
+    .form-control:hover, select:hover, textarea:hover {
+        background-color: #2f2f2f;
+        color: #d3d3d3;
+        border: 1px solid #5a5a5a;
+    }
+
+    .form-control:focus, select:focus, textarea:focus {
+        background-color: #4b4b4b;
+        color: #f0f0f0;
+        border-color: #707070;
+        outline: none;
+    }
+
+    .form-control::placeholder {
+        color: #888888;
+    }
+
+    .date-select, .time-select {
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+    }
+
+    .date-select select, .time-select select {
+        flex: 1;
+        min-width: 100px;
+    }
+
+    .btn-primary {
+        background-color: #428555;
+        border: none;
+        width: 100%;
+        font-weight: bold;
+        padding: 14px;
+        transition: background-color 0.3s ease;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: rgb(53, 116, 71);
+    }
+
+    .alert {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #d9534f;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+
+    .alert-danger {
+        color: white;
+    }
+
+    label {
+        display: block;
+        text-align: center;       /* Centraliza o texto dentro do label */
+    }
+</style>
+
+<div class="container">
+    {{#each erros}}
+        <div class="alert alert-danger"> {{texto}} </div>
+    {{/each}} 
+
+    <h3>Nova Tarefa:</h3>
+    <div class="card">
+        <div class="card-body">
+            <form action="/tarefa/novo" method="post">
+                <label for="title">Tarefa</label>
+                    <input type="text" name="title" id="title" placeholder="Título" class="form-control" required>
+                
+                <label for="description">Descrição</label>
+                    <textarea name="description" id="description" class="form-control" placeholder="(Opcional)"></textarea>
+
+                <!-- Seleção de Data -->
+                <label for="date">Data</label>
+                <div class="date-select">
+                    <!-- Selecionar Dia -->
+                    <select name="day" id="day" class="form-control" required>
+                        <option value="" disabled selected>Dia</option>
+                    </select>
+
+                    <!-- Selecionar Mês -->
+                    <select name="month" id="month" class="form-control" required onchange="updateDays()">
+                        <option value="" disabled selected>Mês</option>
+                    </select>
+
+                    <!-- Selecionar Ano -->
+                    <select name="year" id="year" class="form-control" required onchange="updateDays()">
+                        <option value="" disabled selected>Ano</option>
+                    </select>
+                </div>
+
+                <!-- Seleção de Hora -->
+                <label for="time">Horário</label>
+                <div class="time-select">
+                    <!-- Selecionar Hora -->
+                    <select name="hour" id="hour" class="form-control" required>
+                        <option value="" disabled selected>Hora</option>
+                    </select>
+
+                    <!-- Selecionar Minuto -->
+                    <select name="minute" id="minute" class="form-control" required>
+                        <option value="" disabled selected>Minuto</option>
+                    </select>
+                </div>
+
+                <!-- Campo oculto para armazenar a data ano, mes, dia, hora, minuto,-->
+                <input type="hidden" name="date" id="date" required>
+
+                <button type="submit" class="btn btn-primary mt-2">Criar Tarefa</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const minuteSelect = document.getElementById('minute');
+        const monthSelect = document.getElementById('month');
+        const yearSelect = document.getElementById('year');
+        const hourSelect = document.getElementById('hour');
+        const daySelect = document.getElementById('day');
+
+        const date = new Date();
+        const currentDay = date.getDate();
+        const currentHour = date.getHours();
+        const currentMonth = date.getMonth(); // Mês é 0-indexado (0 = Janeiro)
+        const currentYear = date.getFullYear();
+        const currentMinute = date.getMinutes();
+
+        // Preencher o campo "Ano" com o ano atual e alguns próximos anos
+        const yearRange = 5; // Número de anos futuros para incluir
+        for (let i = currentYear; i <= currentYear + yearRange; i++) {
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = i;
+            yearSelect.appendChild(option); // cria os options e coloca no select year
+        }
+        yearSelect.value = currentYear;
+
+        // Preencher o campo "Mês" com os meses do ano
+        const months = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+
+        months.forEach((month, index) => {
+            const option = document.createElement("option");
+            option.value = index;
+            option.textContent = month;
+            monthSelect.appendChild(option);
+        });
+        monthSelect.value = currentMonth;
+
+        // Preencher o campo "Hora" com as opções de 00 a 23
+        for (let i = 0; i < 24; i++) {
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = i < 10 ? `0${i}` : i;
+            hourSelect.appendChild(option);
+        }
+        // Preencher o campo "Minuto" com as opções de 00 a 59
+        for (let i = 0; i < 60; i++) {
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = i < 10 ? `0${i}` : i;
+            minuteSelect.appendChild(option);
+        }
+
+        // Função para atualizar o número de dias com base no mês e no ano
+        function populateDays(month, year) {
+            // calcular o número de dias em um mês específico de um determinado ano.
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            daySelect.innerHTML = '<option value="" disabled selected>Dia</option>'; // Limpar opções anteriores
+            for (let i = 1; i <= daysInMonth; i++) {
+                const option = document.createElement("option");
+                option.value = i;
+                option.textContent = i;
+                daySelect.appendChild(option);
+            }
+        }
+
+        populateDays(currentMonth, currentYear);
+        daySelect.value = currentDay;
+
+        // Atualizar campo oculto de data no formato desejado
+        function updateHiddenDateField() {
+            const selectedDay = daySelect.value;
+            const selectedMonth = parseInt(monthSelect.value);
+            const selectedYear = parseInt(yearSelect.value);
+            const selectedHour = parseInt(hourSelect.value);
+            const selectedMinute = parseInt(minuteSelect.value);
+
+            if (selectedDay && selectedMonth !== "" && selectedYear !== "" && selectedHour !== "" && selectedMinute !== "") {
+                const formattedDate = new Date(selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute);
+                document.getElementById("date").value = formattedDate.toISOString();
+            }
+        }
+
+        // Adicionar ouvintes de eventos em todos os options para atualizar a data oculta
+        [daySelect, monthSelect, yearSelect, hourSelect, minuteSelect].forEach(element => {
+            element.addEventListener("change", updateHiddenDateField);
+        });
+
+        // Função para atualizar os dias disponíveis quando o mês ou ano é alterado
+        window.updateDays = function() {
+            populateDays(monthSelect.value, yearSelect.value);
+        };
+
+        updateHiddenDateField()
+    });
+</script>

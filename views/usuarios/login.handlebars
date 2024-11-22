@@ -1,0 +1,72 @@
+<style>
+    /* Paleta de cores cinzas */
+    body {
+        background-color: #2b2b2b;
+        color: #d3d3d3;
+        font-family: Arial, sans-serif;
+    }
+    h4 {
+        color: #e0e0e0;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+    .form-label {
+        color: #f0f0f0;
+    }
+    .card {
+        background-color: #333333;
+        border: 1px solid #4d4d4d;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        margin: auto;
+        width: 100%;
+        max-width: 400px;
+    }
+    .form-control {
+        background-color: #3a3a3a;
+        color: #d3d3d3;
+        border: 1px solid #5a5a5a;
+    }
+    .form-control:hover {
+        background-color: #2f2f2f;
+        color: #d3d3d3;
+        border: 1px solid #5a5a5a;
+    }
+    .form-control:focus {
+        background-color: #4b4b4b;
+        color: #f0f0f0;
+        border-color: #707070;
+    }
+    .btn-success {
+        background-color: #428555;
+        border: none;
+        width: 100%;
+        font-weight: bold;
+        padding: 10px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-success:hover {
+        background-color: rgb(53, 116, 71);
+    }
+</style>
+
+
+<div class="container mt-5">
+    <h4 class="text-center">Login</h4>
+    <div class="card">
+        <div class="card-body">
+            <form action="/usuarios/login/novo" method="post">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha:</label>
+                        <input type="password" class="form-control" name="senha" required>
+                </div>
+                <button class="btn btn-success" type="submit">Acessar</button>
+            </form>
+        </div>
+    </div>
+</div>

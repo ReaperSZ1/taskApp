@@ -1,0 +1,81 @@
+
+<style>
+    /* Paleta de cores cinzas */
+    body {
+        background-color: #2b2b2b;
+        color: #d3d3d3;
+        font-family: Arial, sans-serif;
+    }
+    h3 {
+        color: #e0e0e0;
+        margin-bottom: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .card {
+        background-color: #333333;
+        border: 1px solid #4d4d4d;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        margin: auto;
+        width: 100%;
+        color: white;
+        max-width: 400px;
+    }
+
+    .form-control {
+        background-color: #3a3a3a;
+        color: #d3d3d3;
+        border: 1px solid #5a5a5a;
+        margin-bottom: 15px;
+    }
+    .form-control:hover {
+        background-color: #2f2f2f;
+        color: #d3d3d3;
+        border: 1px solid #5a5a5a;
+    }
+    .form-control:focus {
+        background-color: #4b4b4b;
+        color: #f0f0f0;
+        border-color: #707070;
+    }
+    .btn-success {
+        background-color: #428555;
+        border: none;
+        width: 100%;
+        font-weight: bold;
+        padding: 10px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-success:hover {
+        background-color: rgb(53, 116, 71);
+    }
+    
+</style>
+
+{{#each erros}}
+    <div class="alert alert-danger">{{texto}}</div>
+{{/each}}
+
+<h3>Crie sua Conta</h3>
+<div class="card">
+    <div class="card-body">
+        <form action="/usuarios/registro/novo" method="post">
+            <label for="userName">Nome: </label>
+                <input type="text" name="userName" class="form-control" required>
+
+            <label for="email">Email: </label>
+                <input type="email" name="email" class="form-control" required>
+
+            <label for="password">Senha: </label>
+                <input type="password" name="password" class="form-control" required>
+
+            <label for="password2">Repita sua senha: </label>
+                <input type="password" name="password2" class="form-control" required>
+
+            <button type="submit" class="btn btn-success mt-2">Criar Conta</button>
+        </form>
+    </div>
+</div>
+
