@@ -1,6 +1,10 @@
 # Ignore .env file
 .env
 
+# ignorar arquivo __TEST__
+
+__TEST__/
+
 # Ignore node_modules
 node_modules/
 
