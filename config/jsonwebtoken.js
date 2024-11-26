@@ -9,13 +9,18 @@ if (!SECRET_KEY) {
 
 // Função para gerar o token para a tarefa
 function generateTokenForTask(taskId) {
-    // Você pode incluir informações extras no payload, se necessário
-    const payload = { id: taskId };
-    
-    // Gera o token com um tempo de expiração (exemplo: 1 hora)
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+    // Validar o payload
+    const idTask = typeof taskId === 'object' && taskId.toString ? taskId.toString() : taskId;
 
-    return token;
+    if (typeof idTask !== 'string' && typeof idTask !== 'number') 
+        throw new Error('O taskId deve ser uma string ou número válido');
+
+    const payload = { id: idTask };
+
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' }); // criando o token
+    return token;    
 }
 
 module.exports = { generateTokenForTask };
+
+// codigo testado: '../__TEST__/jsonwebtoken'

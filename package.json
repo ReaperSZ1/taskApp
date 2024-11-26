@@ -158,10 +158,13 @@
     "wrap-ansi-cjs": "^7.0.0"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "start": "NODE_ENV=production node app.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }

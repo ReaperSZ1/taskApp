@@ -31,7 +31,7 @@ const isAuthenticated = require('../helpers/isAuthenticated') // Middleware para
                     description: req.body.description,
                     date: data,
                     userId: userId,
-                    token: generateTokenForTask(req.body.id) 
+                    token: generateTokenForTask(req.user._id) 
                 }).save()
                     .then(() => { 
                         req.flash("successMsg", 'Nova Tarefa Criada!') // atribui a msg a variavel global successMsg
@@ -47,20 +47,20 @@ const isAuthenticated = require('../helpers/isAuthenticated') // Middleware para
     // rota para deletar
     router.post('/deletar', isAuthenticated, (req, res) => { 
         task.findOne({ token: req.body.token, userId: req.user.id })
-        .then(task => {
-            if (task) 
-                return task.deleteOne();
-            else 
-                throw new Error("Tarefa não encontrada ou não autorizada");
-        })
-        .then(() => {
-            req.flash("successMsg", 'Tarefa deletada com sucesso');
-            res.redirect('/');
-        })
-        .catch(err => {
-            req.flash("errorMsg", err.message);
-            res.redirect('/');
-        });
+            .then(task => {
+                if (task) 
+                    return task.deleteOne();
+                else 
+                    throw new Error("Tarefa não encontrada ou não autorizada");
+            })
+            .then(() => {
+                req.flash("successMsg", 'Tarefa deletada com sucesso');
+                res.redirect('/');
+            })
+            .catch(err => {
+                req.flash("errorMsg", err.message);
+                res.redirect('/');
+            });
     })
 
     router.get('/editar/:token', (req, res) => {

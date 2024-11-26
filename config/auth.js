@@ -27,15 +27,13 @@ const usuario = require('../models/usuario')
 
 // salvando os dados do usuario na sessão de forma simples
     // isso armazena uma pequena informação (id) do usuario, pra facilitar
-    passport.serializeUser((usuario,done)=>{ 
+    passport.serializeUser((usuario,done) => { 
         done(null, usuario.id) // Salva apenas o ID do usuário, para manter a sessão.
     })
     // usa o id do usuário para buscar os dados completos no banco e passá-los para o Passport.
     passport.deserializeUser((id, done)=>{
         // Busca o usuário no banco de dados usando o ID salvo na sessão.
-        usuario.findById(id).then((usuario)=>{
-            done(null, usuario)
-        }).catch((err)=>{
-             done(null, false, {message:'algo deu errado'})
-        })
+        usuario.findById(id)
+            .then((usuario) => { done(null, usuario) })
+            .catch((err) => { done(null, false, {message:'algo deu errado'}) })
     })

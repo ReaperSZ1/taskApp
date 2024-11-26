@@ -165,11 +165,11 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const minuteSelect = document.getElementById('minute');
-        const hourSelect = document.getElementById('hour');
-        const daySelect = document.getElementById('day');
         const monthSelect = document.getElementById('month');
         const yearSelect = document.getElementById('year');
+        const daySelect = document.getElementById('day');
+        const hourSelect = document.getElementById('hour');
+        const minuteSelect = document.getElementById('minute');
 
         const date = new Date();
         const currentDay = date.getDate();
@@ -230,7 +230,7 @@
         hourSelect.value = taskHour;
         minuteSelect.value = taskMinute;
 
-// Função para atualizar o número de dias com base no mês e no ano
+    // Função para atualizar o número de dias com base no mês e no ano
         function populateDays(month, year) {
             // calcular o número de dias em um mês específico de um determinado ano.
             const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -271,7 +271,5 @@
         };
 
         updateHiddenDateField()
-
     });
-
 </script>

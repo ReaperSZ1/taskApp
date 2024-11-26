@@ -241,7 +241,7 @@
 
             if (selectedDay && selectedMonth !== "" && selectedYear !== "" && selectedHour !== "" && selectedMinute !== "") {
                 const formattedDate = new Date(selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute);
-                document.getElementById("date").value = formattedDate.toISOString();
+                document.getElementById("date").value = formattedDate.toISOString();// adicionando data ao hidden date
             }
         }
 
@@ -250,7 +250,7 @@
             element.addEventListener("change", updateHiddenDateField);
         });
 
-        // Função para atualizar os dias disponíveis quando o mês ou ano é alterado
+        // Função Global criada para atualizar os dias disponíveis quando o mês ou ano é alterado
         window.updateDays = function() {
             populateDays(monthSelect.value, yearSelect.value);
         };

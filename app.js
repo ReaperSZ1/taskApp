@@ -72,7 +72,7 @@
         })
 // #endregion
 // Routes
-    app.get('/', (req, res) => { 
+    app.get('/', (req, res) => {
         const isLoggedIn = req.isAuthenticated() 
         res.render('index', { isLoggedIn })
     })
@@ -80,7 +80,17 @@
     // Exemplo de rota no Express para buscar todas as tarefas de uma data específica
     app.get('/tarefas', isAuthenticated, async (req, res) => {
         const Data = req.query.data;    
-        const userId = req.user._id; 
+        const userId = req.user?._id; 
+
+        // Validação do parâmetro `data`
+        if (!Data || isNaN(new Date(Data).getTime())) {
+            return res.status(400).json({ error: 'A data fornecida é inválida ou está ausente. Use o formato YYYY-MM-DD.' });
+        }
+
+        // Validação do usuário
+        if (!userId) {
+            return res.status(401).json({ error: 'Usuário não autenticado.' });
+        }
 
         // Convertendo a data para o formato de início e fim do dia
         const startOfDay = new Date(Data);
@@ -94,10 +104,16 @@
             const tarefas = await task.find({
                 date: { $gte: startOfDay, $lte: endOfDay },
                 userId: userId
-            });    
-            res.json(tarefas);
+            });
+            console.log(tarefas)
+
+            if (!tarefas || tarefas.length === 0) {
+                return res.status(404).json({ message: 'Nenhuma tarefa encontrada para esta data.' });
+            }
+
+            res.status(200).json(tarefas);
         } catch (error) {
-            res.status(500).json({ error: 'Erro ao buscar tarefas' });
+            res.status(500).json({ error: 'Erro interno ao buscar tarefas.' });
         }
     });
 
