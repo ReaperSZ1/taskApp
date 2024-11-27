@@ -52,6 +52,7 @@
             const totalDays = lastDay.getDate(); 
 
             let daysHtml = [];
+
             daysOfWeek.forEach(day => {
                 daysHtml.push(`<div class="day-name">${day}</div>`);
             });
@@ -69,6 +70,7 @@
                     </div>
                 `);
             }
+            
             calendarElement.innerHTML = daysHtml.join('');
 
             // Agora, usamos addEventListener para registrar o clique

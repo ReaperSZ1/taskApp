@@ -115,7 +115,7 @@
         } catch (error) {
             res.status(500).json({ error: 'Erro interno ao buscar tarefas.' });
         }
-    });
+    }); 
 
     app.use('/usuarios', User) 
     app.use('/tarefa', Task) 

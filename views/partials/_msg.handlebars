@@ -45,13 +45,15 @@
 
 <!-- Mensagens Flash -->
 {{#if successMsg}}
-    <div id="successMsg" class="alert alert-success">
-        {{successMsg}}
-    </div>
-{{/if}}
+    {{#each successMsg}}
+        <div class="alert alert-success successMsg">{{this}}</div>
+    {{/each}}
+{{/if}} 
 
 {{#if errorMsg}}
-    <div id="errorMsg" class="alert alert-danger">
-        {{errorMsg}}
-    </div>
+    {{#each errorMsg}}
+        <div class="alert alert-danger errorMsg">{{this}}</div>
+    {{/each}}
 {{/if}}
+
+

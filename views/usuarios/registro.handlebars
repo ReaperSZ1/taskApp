@@ -54,7 +54,7 @@
 </style>
 
 {{#each erros}}
-    <div class="alert alert-danger">{{texto}}</div>
+    <div class="alert alert-danger">{{msg}}</div>
 {{/each}}
 
 <h3>Crie sua Conta</h3>
@@ -62,16 +62,16 @@
     <div class="card-body">
         <form action="/usuarios/registro/novo" method="post">
             <label for="userName">Nome: </label>
-                <input type="text" name="userName" class="form-control" required>
+                <input type="text" name="userName" class="form-control" required autocomplete="username">
 
             <label for="email">Email: </label>
-                <input type="email" name="email" class="form-control" required>
+                <input type="email" name="email" class="form-control" required autocomplete="email">
 
             <label for="password">Senha: </label>
-                <input type="password" name="password" class="form-control" required>
+                <input type="password" name="password" class="form-control" required autocomplete="new-password">
 
             <label for="password2">Repita sua senha: </label>
-                <input type="password" name="password2" class="form-control" required>
+                <input type="password" name="password2" class="form-control"  autocomplete="new-password">
 
             <button type="submit" class="btn btn-success mt-2">Criar Conta</button>
         </form>
