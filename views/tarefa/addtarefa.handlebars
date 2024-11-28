@@ -105,10 +105,6 @@
 </style>
 
 <div class="container">
-    {{#each erros}}
-        <div class="alert alert-danger"> {{texto}} </div>
-    {{/each}} 
-
     <h3>Nova Tarefa:</h3>
     <div class="card">
         <div class="card-body">
@@ -242,6 +238,7 @@
             if (selectedDay && selectedMonth !== "" && selectedYear !== "" && selectedHour !== "" && selectedMinute !== "") {
                 const formattedDate = new Date(selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute);
                 document.getElementById("date").value = formattedDate.toISOString();// adicionando data ao hidden date
+                console.log(document.getElementById("date").value)
             }
         }
 

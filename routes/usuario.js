@@ -96,7 +96,7 @@ const passport = require('passport')
                 if (err) {
                     return next(err);
                 }
-    
+                console.log()
                 // Mensagem de sucesso após login
                 req.flash('successMsg', 'Login realizado com sucesso!');
     

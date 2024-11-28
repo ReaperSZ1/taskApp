@@ -87,11 +87,6 @@
             return res.status(400).json({ error: 'A data fornecida é inválida ou está ausente. Use o formato YYYY-MM-DD.' });
         }
 
-        // Validação do usuário
-        if (!userId) {
-            return res.status(401).json({ error: 'Usuário não autenticado.' });
-        }
-
         // Convertendo a data para o formato de início e fim do dia
         const startOfDay = new Date(Data);
         startOfDay.setHours(0, 0, 0, 0);  // Ajusta para 00:00:00.000
@@ -105,8 +100,7 @@
                 date: { $gte: startOfDay, $lte: endOfDay },
                 userId: userId
             });
-            console.log(tarefas)
-
+            
             if (!tarefas || tarefas.length === 0) {
                 return res.status(404).json({ message: 'Nenhuma tarefa encontrada para esta data.' });
             }

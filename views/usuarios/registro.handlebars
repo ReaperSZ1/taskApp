@@ -53,10 +53,6 @@
     
 </style>
 
-{{#each erros}}
-    <div class="alert alert-danger">{{msg}}</div>
-{{/each}}
-
 <h3>Crie sua Conta</h3>
 <div class="card">
     <div class="card-body">
@@ -71,7 +67,7 @@
                 <input type="password" name="password" class="form-control" required autocomplete="new-password">
 
             <label for="password2">Repita sua senha: </label>
-                <input type="password" name="password2" class="form-control"  autocomplete="new-password">
+                <input type="password" name="password2" class="form-control" required autocomplete="new-password">
 
             <button type="submit" class="btn btn-success mt-2">Criar Conta</button>
         </form>
