@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendário de Tarefas</title>
-    <link rel="stylesheet" href="/indexModules/index.css">  
+    <link rel="stylesheet" href="/css/index/index.css">  
     {{!-- o arquivo esta no diretorio public, por que é o padrão do codigo  --}}
 </head>
 <body>
@@ -12,8 +12,8 @@
     
     <!-- Botões de navegação entre os meses -->
     <div class="nav-buttons">
-        <button onclick="changeMonth(-1)">Mês Anterior</button>
-        <button onclick="changeMonth(1)">Próximo Mês</button>
+        <button id="btn-lastMonth">Mês Anterior</button>
+        <button id="btn-nextMonth">Próximo Mês</button>
     </div>
     
     <!-- Calendário -->
@@ -23,126 +23,14 @@
         {{!-- Lista de tarefas --}}
         <div class="task-list" id="task-list">
             <h3 id="task-list-title">Lista de Tarefas</h3>
-            <p id="p">Aqui estão suas tarefas:</p>
+            <p id="p"></p>
             <ul id="task-items"></ul>
         </div>
     {{else}}
         <p>Por favor, faça login para ver suas tarefas.</p>
     {{/if}}
 
-    <script type='module'>
-        import {renderTasks} from '/indexModules/taskRender.mjs' // renderizar as tarefas
-
-        let currentYear = new Date().getFullYear(); // Ano atual
-        let currentMonth = new Date().getMonth(); // Mês atual (0-11)
-        let currentDay = new Date().getDate(); // Dia atual
-        let selectedDay = null; // Armazena o dia selecionado
-
-        const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-        const monthNames = [
-            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
-            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-        ];
-
-        function generateCalendar() {
-            const calendarElement = document.getElementById('calendar');
-            const firstDay = new Date(currentYear, currentMonth, 1);
-            const firstDayOfWeek = firstDay.getDay(); 
-            const lastDay = new Date(currentYear, currentMonth + 1, 0);
-            const totalDays = lastDay.getDate(); 
-
-            let daysHtml = [];
-
-            daysOfWeek.forEach(day => {
-                daysHtml.push(`<div class="day-name">${day}</div>`);
-            });
-
-            for (let i = 0; i < firstDayOfWeek; i++) {
-                daysHtml.push('<div class="day"></div>');
-            }
-
-            for (let day = 1; day <= totalDays; day++) {
-                const isToday = day === currentDay ? 'today' : '';
-                const isSelected = day === selectedDay ? 'selected' : '';
-                daysHtml.push(`
-                    <div class="day ${isToday} ${isSelected}" data-day="${day}">
-                        ${day}
-                    </div>
-                `);
-            }
-            
-            calendarElement.innerHTML = daysHtml.join('');
-
-            // Agora, usamos addEventListener para registrar o clique
-            const days = calendarElement.querySelectorAll('.day');
-            days.forEach(day => {
-                day.addEventListener('click', () => {
-                    const dayNumber = day.getAttribute('data-day');
-                    showTasks(Number(dayNumber)); // Passa o número do dia
-                });
-            });
-        }
-
-        // Função para exibir as tarefas do dia selecionado
-        function showTasks(day) {
-            // Armazena o dia selecionado e atualiza a visualização do calendário
-            selectedDay = day;
-            generateCalendar();
-
-            // Atualiza o título da lista de tarefas
-            const taskListTitle = document.getElementById('task-list-title');
-            const monthName = monthNames[currentMonth];
-            const year = currentYear;
-            taskListTitle.textContent = `Lista de Tarefas para o dia ${day}, de ${monthName}, de ${year}`;
-
-            const taskList = document.getElementById('task-items');
-            taskList.innerHTML = ''
-
-            // Formata a data desejada (ajuste conforme necessário)
-            const selectedDate = new Date(currentYear, currentMonth, day); // Criando o objeto Date
-
-            // Formata a data para o formato ISO 8601 (como 2024-11-15T19:37:00.000Z)
-            const isoDate = selectedDate.toISOString();
-
-            // Fazendo requisição para lista as tarefas
-            fetch(`/tarefas?data=${isoDate}`) // quero modularizar tudo isso
-                .then(response => {
-                    if (!response.ok) { // Se a resposta não for ok (status diferente de 2xx)
-                        return response.json().then(err => { // Aqui você captura o corpo da resposta de erro
-                            throw new Error(err.message || 'Erro desconhecido'); // Lança o erro com a mensagem do servidor
-                        });
-                    }
-                    return response.json()
-                })
-                .then(tasks => { renderTasks(tasks, taskList); }) // file:///c:/nodejs/taskApp/public/indexModules/taskRender.mjs
-                .catch(error => console.error('Erro:', error));
-        }
-
-        // Função para atualizar o título do mês
-        function updateMonthTitle() {
-            const monthTitle = document.getElementById('month-title');
-            monthTitle.textContent = `Calendário de ${monthNames[currentMonth]} ${currentYear}`;
-        }
-
-        // Função para mudar o mês
-        function changeMonth(offset) {
-            currentMonth += offset;
-            // caso mude de ano
-            if (currentMonth < 0) {
-                currentMonth = 11; // mês atual recebe dezembro
-                currentYear--; // Se o mês for menor que 0, volta para dezembro e subtrai 1 do ano
-            } else if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++; // Se o mês for maior que 11, volta para janeiro e adiciona 1 ao ano
-            }
-            updateMonthTitle(); // Atualiza o título do mês
-            generateCalendar(); // Gera o calendário para o novo mês
-        }
-
-        // Inicialização
-        updateMonthTitle(); // Atualiza o título do mês
-        generateCalendar(); // Gera o calendário
-        showTasks(currentDay); // Exibe as tarefas do dia atual
-    </script>
+    <script type="module" src="/js/index/index.mjs"></script>
+    {{!-- file:///c:/nodejs/taskApp/public/js/index/index.mjs --}}
 </body>
 </html>

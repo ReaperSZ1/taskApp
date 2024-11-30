@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { body, validationResult } = require('express-validator'); // validaçao de formulários
-const { generateTokenForTask } = require('../config/jsonwebtoken'); // gera token para id
+const { generateTokenForTask } = require('../helpers/jsonwebtoken'); // gera token para id
 const isAuthenticated = require('../helpers/isAuthenticated') // Middleware para verificar se o usuário está logado
 const task = require('../models/task')
 

@@ -6,17 +6,18 @@
     const session = require("express-session")
     const flash = require("connect-flash") 
     const mongoose = require('mongoose')
+    const helmet = require('helmet') // prevent xss attacks
     const path = require('path') 
     
     const passport = require('passport');
     require('./config/auth')(passport)
     require('dotenv').config();
 
+    const isAuthenticated = require('./helpers/isAuthenticated') // Middleware para verificar se o usuário está logado
     const User = require('./routes/usuario') 
     const Task = require('./routes/tarefa') 
     const task = require('./models/task')
-    const isAuthenticated = require('./helpers/isAuthenticated') // Middleware para verificar se o usuário está logado
-
+    
 // #region Settings 
     // MongoURI - verifica se vou rodar o server no local ou no render
         // verifica se estou conectando via localhost
@@ -62,8 +63,21 @@
         app.use(passport.initialize()) 
         app.use(passport.session()) 
         app.use(flash()) 
-    // MiddleWare 
+    // Helmet
+        app.use(helmet.contentSecurityPolicy({
+            // Helmet para configurar políticas de segurança (CSP e outras)
+            directives: {
+                scriptSrc: [
+                    "'self'", // Permite scripts do próprio domínio
+                    "https://cdn.jsdelivr.net", // Permite scripts do CDN específico
+                ],
+                scriptSrcElem: ["'self'", "https://cdn.jsdelivr.net"],
+                scriptSrcAttr: ["'self'"],
+            }
+        }));           
+        // MiddleWare 
         app.use((req, res, next) => {
+            // variaveis globais acessiveis no handlebars
             res.locals.successMsg = req.flash('successMsg') // armazena mensagens de sucesso temporárias
             res.locals.errorMsg = req.flash('errorMsg') // armazena mensagens de erro personalizadas
             res.locals.error = req.flash('error') // armazena mensagens de erro padrão, especialmente para o Passport
