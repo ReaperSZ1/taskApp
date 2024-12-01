@@ -11,21 +11,31 @@ const passport = require('passport')
     })
 
     router.post('/registro/novo',[
-        // validação de formulário
+        // Validação e sanitização do nome de usuário
         body('userName')
-            .notEmpty().withMessage('Nome é obrigatório') // verifica se não ta vazio
-            .isLength({ min: 2 }).withMessage('Nome muito pequeno'), // tamanho minimo 2
+            .notEmpty().withMessage('Nome é obrigatório')
+            .isLength({ min: 2 }).withMessage('Nome muito pequeno')
+            .trim() // Remove espaços extras
+            .escape(), // Escapa caracteres especiais
+
+        // Validação e sanitização do e-mail
         body('email')
-            .notEmpty().withMessage('E-mail é obrigatório') 
-            .isEmail().withMessage('E-mail inválido') // Valida se o valor é um e-mail no formato correto.
-            .isLength({ min: 10 }).withMessage('E-mail muito pequeno'),
+            .notEmpty().withMessage('E-mail é obrigatório')
+            .isEmail().withMessage('E-mail inválido')
+            .isLength({ min: 10 }).withMessage('E-mail muito pequeno')
+            .normalizeEmail(), // Normaliza o e-mail (ex.: remove pontos desnecessários em Gmail)
+
+        // Validação e sanitização da senha
         body('password')
-            .notEmpty().withMessage('Senha é obrigatório') 
-            .isLength({ min: 4 }).withMessage('Senha muito curta'),
+            .notEmpty().withMessage('Senha é obrigatória')
+            .isLength({ min: 4 }).withMessage('Senha muito curta')
+            .trim(), // Remove espaços extras para evitar tentativas de injeção
+
+        // Validação personalizada e sanitização da confirmação de senha
         body('password2')
-            .notEmpty().withMessage('Segunda Senha é obrigatório') 
+            .notEmpty().withMessage('Confirmação de senha é obrigatória')
             .custom((value, { req }) => value === req.body.password).withMessage('As senhas não coincidem')
-            // personalizado, O valor de password2 é comparado com o campo password enviado no corpo da requisição (req.body.password).
+            .trim(), // Remove espaços extras
     ], (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

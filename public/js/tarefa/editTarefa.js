@@ -83,30 +83,37 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Atualizar campo oculto de data no formato desejado
     function updateHiddenDateField() {
-        const selectedDay = daySelect.value;
+        const selectedDay = parseInt(daySelect.value);
         const selectedMonth = parseInt(monthSelect.value);
         const selectedYear = parseInt(yearSelect.value);
         const selectedHour = parseInt(hourSelect.value);
         const selectedMinute = parseInt(minuteSelect.value);
-
-        if (selectedDay && selectedMonth !== "" && selectedYear !== "" && selectedHour !== "" && selectedMinute !== "") {
+        // sanitização
+        if (
+            !isNaN(selectedDay) && !isNaN(selectedMonth) && !isNaN(selectedYear) &&
+            !isNaN(selectedHour) && !isNaN(selectedMinute)
+        ) {
             const formattedDate = new Date(selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute);
-            document.getElementById("date").value = formattedDate.toISOString();
+
+            // Validação extra para evitar datas inválidas
+            if (!isNaN(formattedDate.getTime())) {
+                document.getElementById("date").value = formattedDate.toISOString();
+            } else {
+                console.error("Data inválida gerada no frontend");
+            }
+        } else {
+            console.error("Entradas inválidas no formulário");
         }
     }
+
 
     // Adicionar ouvintes de eventos para atualizar a data oculta
     [daySelect, monthSelect, yearSelect, hourSelect, minuteSelect].forEach(element => {
         element.addEventListener("change", updateHiddenDateField);
     });
 
-    // Função para atualizar os dias disponíveis quando o mês ou ano é alterado
-    function updateDays() {
-        populateDays(monthSelect.value, yearSelect.value);
-    };
-
-    document.getElementById('month').addEventListener('change', () => updateDays())
-    document.getElementById('year').addEventListener('change', () => updateDays())
+    monthSelect.addEventListener("change", () => populateDays(monthSelect.value, yearSelect.value));
+    yearSelect.addEventListener("change", () => populateDays(monthSelect.value, yearSelect.value));
 
     updateHiddenDateField()
 });

@@ -31,6 +31,51 @@ export function renderTasks(tasks, taskListElement) {
 
         taskItem.appendChild(taskText);
 
+        // Adicionar botão de visualização da descrição se existir descrição
+        if (task.description) {
+            const descriptionBtn = document.createElement('button');
+            descriptionBtn.classList.add('description-btn');
+            descriptionBtn.innerHTML = '📓'; // Emoji de caderno
+            descriptionBtn.style.marginLeft = '10px'; // Espaço à esquerda do botão
+            descriptionBtn.type = 'button'; // Tipo de botão para evitar submeter o formulário
+
+             // Exibir descrição ao clicar no botão
+            descriptionBtn.addEventListener('click', function() {
+                // Criar o modal de descrição
+                const modal = document.createElement('div');
+                modal.classList.add('modal');
+
+                // Criar o bloco de conteúdo da descrição
+                const modalContent = document.createElement('div');
+                modalContent.classList.add('modal-content');
+
+                // Adicionar o conteúdo da descrição
+                const descriptionText = document.createElement('p');
+                descriptionText.textContent = task.description;
+                modalContent.appendChild(descriptionText);
+
+                // Criar o botão de voltar
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = 'Voltar';
+                closeBtn.classList.add('close-btn');
+
+                // Fechar o modal ao clicar no botão
+                closeBtn.addEventListener('click', function() {
+                    document.body.removeChild(modal); // Remove o modal da página
+                });
+
+                modalContent.appendChild(closeBtn);
+
+                // Adicionar o conteúdo e o modal ao corpo da página
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+            });
+            taskItem.appendChild(descriptionBtn);
+
+            // Mover o texto da tarefa para a direita
+            taskText.style.marginLeft = '50px'; // Adiciona um pequeno deslocamento à esquerda do texto
+        }
+
         // Formulário de exclusão
         const deleteForm = document.createElement('form');
         deleteForm.action = `/tarefa/deletar`;

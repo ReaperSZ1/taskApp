@@ -1,29 +1,31 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const minuteSelect = document.getElementById('minute');
-    const monthSelect = document.getElementById('month');
-    const yearSelect = document.getElementById('year');
-    const hourSelect = document.getElementById('hour');
-    const daySelect = document.getElementById('day');
+document.addEventListener("DOMContentLoaded", function () {
+    const minuteSelect = document.getElementById("minute");
+    const monthSelect = document.getElementById("month");
+    const yearSelect = document.getElementById("year");
+    const hourSelect = document.getElementById("hour");
+    const daySelect = document.getElementById("day");
+    const hiddenDateInput = document.getElementById("date");
 
     const date = new Date();
     const currentDay = date.getDate();
     const currentMonth = date.getMonth(); // Mês é 0-indexado (0 = Janeiro)
     const currentYear = date.getFullYear();
 
-    // Preencher o campo "Ano" com o ano atual e alguns próximos anos
-    const yearRange = 5; // Número de anos futuros para incluir
+    const yearRange = 5; // Número de anos futuros para inclui
+
+    // Preencher o campo "Ano"
     for (let i = currentYear; i <= currentYear + yearRange; i++) {
         const option = document.createElement("option");
         option.value = i;
         option.textContent = i;
-        yearSelect.appendChild(option); // cria os options e coloca no select year
+        yearSelect.appendChild(option);
     }
     yearSelect.value = currentYear;
 
-    // Preencher o campo "Mês" com os meses do ano
+    // Preencher o campo "Mês"
     const months = [
         "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
     ];
 
     months.forEach((month, index) => {
@@ -34,14 +36,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     monthSelect.value = currentMonth;
 
-    // Preencher o campo "Hora" com as opções de 00 a 23
+    // Preencher o campo "Hora" e "Minuto"
     for (let i = 0; i < 24; i++) {
         const option = document.createElement("option");
         option.value = i;
         option.textContent = i < 10 ? `0${i}` : i;
         hourSelect.appendChild(option);
     }
-    // Preencher o campo "Minuto" com as opções de 00 a 59
     for (let i = 0; i < 60; i++) {
         const option = document.createElement("option");
         option.value = i;
@@ -49,11 +50,10 @@ document.addEventListener("DOMContentLoaded", function() {
         minuteSelect.appendChild(option);
     }
 
-    // Função para atualizar o número de dias com base no mês e no ano
+    // Função para atualizar os dias
     function populateDays(month, year) {
-        // calcular o número de dias em um mês específico de um determinado ano.
         const daysInMonth = new Date(parseInt(year), parseInt(month) + 1, 0).getDate();
-        daySelect.innerHTML = '<option value="" disabled selected>Dia</option>'; // Limpar opções anteriores
+        daySelect.innerHTML = '<option value="" disabled selected>Dia</option>';
         for (let i = 1; i <= daysInMonth; i++) {
             const option = document.createElement("option");
             option.value = i;
@@ -65,31 +65,46 @@ document.addEventListener("DOMContentLoaded", function() {
     populateDays(currentMonth, currentYear);
     daySelect.value = currentDay;
 
-    // Atualizar campo oculto de data no formato desejado
+    // Função para sanitizr os valores de select 
+    function validateSelectValue(value, min, max) {
+        const parsedValue = parseInt(value, 10);
+        return !isNaN(parsedValue) && parsedValue >= min && parsedValue <= max;
+    }
+
     function updateHiddenDateField() {
         const selectedDay = daySelect.value;
-        const selectedMonth = parseInt(monthSelect.value);
-        const selectedYear = parseInt(yearSelect.value);
-        const selectedHour = parseInt(hourSelect.value);
-        const selectedMinute = parseInt(minuteSelect.value);
+        const selectedMonth = monthSelect.value;
+        const selectedYear = yearSelect.value;
+        const selectedHour = hourSelect.value;
+        const selectedMinute = minuteSelect.value;
 
-        if (selectedDay && selectedMonth !== "" && selectedYear !== "" && selectedHour !== "" && selectedMinute !== "") {
-            const formattedDate = new Date(selectedYear, selectedMonth, selectedDay, selectedHour, selectedMinute);
-            document.getElementById("date").value = formattedDate.toISOString();// adicionando data ao hidden date
+        if (
+            validateSelectValue(selectedDay, 1, 31) &&
+            validateSelectValue(selectedMonth, 0, 11) &&
+            validateSelectValue(selectedYear, currentYear, currentYear + yearRange) &&
+            validateSelectValue(selectedHour, 0, 23) &&
+            validateSelectValue(selectedMinute, 0, 59)
+        ) {
+            const formattedDate = new Date(
+                parseInt(selectedYear, 10),
+                parseInt(selectedMonth, 10),
+                parseInt(selectedDay, 10),
+                parseInt(selectedHour, 10),
+                parseInt(selectedMinute, 10)
+            );
+            hiddenDateInput.value = formattedDate.toISOString();
+        } else {
+            hiddenDateInput.value = "";
         }
     }
 
-    function updateDays() {
-        populateDays(monthSelect.value, yearSelect.value);
-    };
+    // Eventos
+    monthSelect.addEventListener("change", () => populateDays(monthSelect.value, yearSelect.value));
+    yearSelect.addEventListener("change", () => populateDays(monthSelect.value, yearSelect.value));
 
-    // Adicionar ouvintes de eventos em todos os options para atualizar a data oculta
-    [daySelect, monthSelect, yearSelect, hourSelect, minuteSelect].forEach(element => {
+    [daySelect, monthSelect, yearSelect, hourSelect, minuteSelect].forEach((element) => {
         element.addEventListener("change", updateHiddenDateField);
     });
 
-    document.getElementById('month').addEventListener('change', () => updateDays())
-    document.getElementById('year').addEventListener('change', () => updateDays())
-
-    updateHiddenDateField()
+    updateHiddenDateField();
 });

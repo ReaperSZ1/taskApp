@@ -17,6 +17,15 @@ const task = require('../models/task')
             .isISO8601().withMessage('Data Inválida, Formato correto: YYYY-MM-DD.'),
         body('title')
             .notEmpty().withMessage('Adicione um Titulo')
+            .matches(/^[a-zA-Z0-9_,!\-\s]+$/).withMessage('O título não pode conter caracteres especiais')  // adadadadad
+            .isLength({ max: 50 }).withMessage('O título não pode ter mais de 50 caracteres')
+            .trim() // Remove espaços extras antes e depois do título
+            .escape(), // Escapa caracteres especiais para evitar XSS
+        body('description')
+            .optional() //  Esta validação permite que o campo de descrição seja vazio.
+            .matches(/^[a-zA-Z0-9_,\-\s]*$/).withMessage('A descrição não pode conter caracteres especiais')
+            .trim() // Remove espaços extras antes e depois do título
+            .escape(), // Escapa caracteres especiais para evitar XSS
     ],(req, res) => { 
         const userId = req.user._id; // Pega o _id do usuário logado no Passport ou outra autenticação
         const errors = validationResult(req)
@@ -47,7 +56,6 @@ const task = require('../models/task')
         }
     })
 
-    // rota para deletar
     router.post('/deletar', isAuthenticated, (req, res) => { 
         task.findOne({ token: req.body.token, userId: req.user.id })
             .then(task => {
@@ -74,13 +82,22 @@ const task = require('../models/task')
             res.redirect('/')
         })
     })
+    
     router.post('/editar',[
-        // validação de formulário
+        // validação de formulário e sanitização
         body('date')
             .notEmpty().withMessage('Adicione uma Data')
             .isISO8601().withMessage('Data Inválida, Formato correto: YYYY-MM-DD.'),
         body('title')
             .notEmpty().withMessage('Adicione um Titulo')
+            .matches(/^[a-zA-Z0-9_,\-\s]+$/).withMessage('O título não pode conter caracteres especiais') 
+            .isLength({ max: 50 }).withMessage('O título não pode ter mais de 50 caracteres')
+            .trim() // Remove espaços extras antes e depois do título
+            .escape(), // Escapa caracteres especiais para evitar XSS
+        body('description')
+            .optional() //  Esta validação permite que o campo de descrição seja vazio.
+            .matches(/^[a-zA-Z0-9_,\-\s]*$/).withMessage('A descrição não pode conter caracteres especiais')
+            .trim().escape()
     ], (req, res) => {
         const errors = validationResult(req)
 

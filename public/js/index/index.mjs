@@ -40,7 +40,7 @@ function generateCalendar() {
     
     calendarElement.innerHTML = daysHtml.join('');
 
-    // Agora, usamos addEventListener para registrar o clique
+    // ao clicar em um dia ele chama showtasks com o dia selecionado
     const days = calendarElement.querySelectorAll('.day');
     days.forEach(day => {
         day.addEventListener('click', () => {
@@ -70,7 +70,7 @@ function showTasks(day) {
     // Formata a data para o formato ISO 8601 (como 2024-11-15T19:37:00.000Z)
     const isoDate = selectedDate.toISOString();
 
-    // Fazendo requisição para lista as tarefas
+    // buscando tarefas para o dia especifico
     fetch(`/tarefas?data=${isoDate}`) // quero modularizar tudo isso
         .then(response => {
             if (!response.ok) { // Se a resposta não for ok (status diferente de 2xx)
