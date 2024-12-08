@@ -82,12 +82,12 @@ export function renderTasks(tasks, taskListElement) {
         deleteForm.method = 'POST';
         deleteForm.classList.add('delete-form');
 
-        const methodInput = document.createElement('input');
-        methodInput.type = 'hidden';
-        methodInput.name = 'token';
-        methodInput.value = task.token;
+        const delHidInput = document.createElement('input');
+        delHidInput.type = 'hidden';
+        delHidInput.name = 'token';
+        delHidInput.value = task.token;
 
-        deleteForm.appendChild(methodInput);
+        deleteForm.appendChild(delHidInput);
 
         const deleteBtn = document.createElement('button');
         deleteBtn.classList.add('delete-btn');
@@ -99,9 +99,16 @@ export function renderTasks(tasks, taskListElement) {
 
         // Formulário de edição
         const editForm = document.createElement('form');
-        editForm.action = `/tarefa/editar/${task.token}`;
+        editForm.action = `/tarefa/editar`;
         editForm.method = 'get';
         editForm.classList.add('edit-form');
+
+        const editHidInput = document.createElement('input');
+        editHidInput.type = 'hidden';
+        editHidInput.name = 'token';
+        editHidInput.value = task.token;
+
+        editForm.appendChild(editHidInput);
 
         const editBtn = document.createElement('button');
         editBtn.classList.add('edit-btn');

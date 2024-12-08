@@ -93,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 parseInt(selectedMinute, 10)
             );
             hiddenDateInput.value = formattedDate.toISOString();
+            console.log(hiddenDateInput.value)
         } else {
             hiddenDateInput.value = "";
         }

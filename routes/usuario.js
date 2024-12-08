@@ -7,7 +7,7 @@ const passport = require('passport')
 
 // routes
     router.get('/registro', (req, res) => {
-        res.render('usuarios/registro')
+        res.status(200).render('usuarios/registro')
     })
 
     router.post('/registro/novo',[
@@ -50,6 +50,7 @@ const passport = require('passport')
             usuario.findOne({email: req.body.email}).then((conta) => {
                 if(conta){
                     req.flash('errorMsg', 'Já existe uma conta com este e-mail no nosso sistema!')
+                    res.setHeader('X-Flash-Error', 'Já existe uma conta com este e-mail no nosso sistema!')
                     res.redirect('/usuarios/registro')
                 } else {
                     const novoUsuario = new usuario({
@@ -69,20 +70,23 @@ const passport = require('passport')
                                 // encripta a password
                                 novoUsuario.password = hash
 
-                                novoUsuario.save().then(() => {
-                                    req.flash('successMsg', 'Usuário criado com sucesso! Acesse sua conta!')
-                                    res.redirect('/')
-                                }).catch((err) => {
-                                    req.flash('errorMsg', 'Houve um Erro ao criar o usuario tente novamente')
-                                    res.redirect('/usuarios/registro')
-                                })
+                                novoUsuario.save()
+                                    .then(() => {
+                                        req.flash('successMsg', 'Usuário criado com sucesso! Acesse sua conta!')
+                                        res.setHeader('X-Flash-Success', 'Usuário criado com sucesso! Acesse sua conta!')
+                                        res.redirect('/')
+                                    })
+                                    .catch((err) => {
+                                        req.flash('errorMsg', 'Houve um Erro ao criar o usuario tente novamente')
+                                        res.redirect('/usuarios/registro')
+                                    })
                             }
                         })
                     })
                 }
             }).catch((err) => {
                 req.flash('errorMsg', 'Houve um Erro interno')
-                res.redirect('/')
+                res.redirect('/usuarios/registro')
             })
         }
     })
@@ -93,25 +97,21 @@ const passport = require('passport')
 
     router.post('/login/novo', (req, res, next) => {
         passport.authenticate('local', (err, user, info) => {
-            if (err) {
-                return next(err); // Trate qualquer erro
-            }
+            if (err) return next(err); // Trate qualquer erro
+            
             if (!user) {
                 req.flash('errorMsg', info.message || 'Erro de autenticação');
+                res.setHeader('X-Flash-Error', 'Conta inexistente ou senha incorreta')
                 return res.redirect('/usuarios/login'); // Se não autenticado, redireciona de volta ao login
             }
     
             // Se a autenticação for bem-sucedida
             req.logIn(user, (err) => {
-                if (err) {
-                    return next(err);
-                }
-                console.log()
-                // Mensagem de sucesso após login
+                if (err) return next(err);
+                
                 req.flash('successMsg', 'Login realizado com sucesso!');
-    
-                // Redireciona para a página inicial após login bem-sucedido
-                return res.redirect('/');
+                res.setHeader('X-Flash-Success', 'Login realizado com sucesso!')
+                res.redirect('/');
             });
         })(req, res, next);
     });
@@ -123,6 +123,7 @@ const passport = require('passport')
                 return next(err) 
             } else {
                 req.flash("successMsg", 'Conta Deslogada!')
+                res.setHeader('X-Flash-Success', 'Conta Deslogada!')
                 res.redirect('/')
             }
         })

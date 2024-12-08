@@ -113,12 +113,12 @@
             const tarefas = await task.find({
                 date: { $gte: startOfDay, $lte: endOfDay },
                 userId: userId
-            });
+            }).select('-_id -createdAt -updatedAt -userId'); // remove dados sensiveis do obj tarefa para nao expor
             
             if (!tarefas || tarefas.length === 0) {
                 return res.status(404).json({ message: 'Nenhuma tarefa encontrada para esta data.' });
             }
-
+            
             res.status(200).json(tarefas);
         } catch (error) {
             res.status(500).json({ error: 'Erro interno ao buscar tarefas.' });
