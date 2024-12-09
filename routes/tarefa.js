@@ -9,7 +9,7 @@ const task = require('../models/task')
         res.render('tarefa/addtarefa');
     })
 
-    router.post('/novo', isAuthenticated, [
+    router.post('/novo', isAuthenticated, [ // joj
         // validação de formulário
         body('date')
             .notEmpty().withMessage('Adicione uma Data')
