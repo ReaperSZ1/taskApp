@@ -162,7 +162,7 @@
   "scripts": {
     "test": "jest --coverage",
     "start": "NODE_ENV=production node app.js",
-    "test-api": "newman run ./.github/postman/taskApp.postman_collection.json"
+    "test-api": "newman run ./.github/postman/taskApp.postman_collection.json -e ./.github/postman/local.postman_environment.json"
   },
   "keywords": [],
   "author": "",
