@@ -34,6 +34,7 @@ const task = require('../models/task')
             let errorsArray = validationResult(req).array()
 
             req.flash('errorMsg', errorsArray.map(err => err.msg))
+            res.setHeader('X-Flash-Error', 'validação de formulário')
             res.redirect('/tarefa/add');  // Redireciona para a URL desejada
         } else {
             const data = new Date(req.body.date);
@@ -130,6 +131,7 @@ const task = require('../models/task')
             let errorsArray = validationResult(req).array()
 
             req.flash('errorMsg', errorsArray.map(err => err.msg))
+            res.setHeader('X-Flash-Error', 'validação de formulário')
             res.redirect(`/tarefa/editar?token=${req.body.token}`); // redireciona a url usando req.query
         } else {
             // procura a task na db e faz as alterações
