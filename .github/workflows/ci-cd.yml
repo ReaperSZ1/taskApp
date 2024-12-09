@@ -1,0 +1,44 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test: 
+    runs-on: ubuntu-latest # maquina virtual no qual será rodado os tests
+
+    steps:
+      # Etapa 1: Fazer checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Etapa 2: Configurar Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Etapa 3: Instalar dependências do projeto
+      - name: Install dependencies
+        run: npm install
+
+      # Etapa 4: Executar testes com Newman
+      - name: Run API tests with Postman/Newman
+        run: npm run test-api
+
+  deploy:
+    # Este job depende do job de testes, ele só será executado se o job 'test' passar
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Production
+        run: npm run deploy
