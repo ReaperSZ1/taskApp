@@ -66,7 +66,7 @@ const task = require('../models/task')
                     res.redirect("/tarefa/add")
                 })
         }
-    })// jooj
+    })// 
 
     router.post('/deletar', isAuthenticated, (req, res) => { 
         task.findOne({ token: req.body.token, userId: req.user._id })
