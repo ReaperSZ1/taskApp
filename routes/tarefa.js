@@ -6,10 +6,10 @@ const isAuthenticated = require('../helpers/isAuthenticated') // Middleware para
 const task = require('../models/task')
 
     router.get('/add', isAuthenticated, (req, res) => { 
-        res.render('tarefa/addtarefa');
+        res.status(200).render('tarefa/addtarefa');
     })
 
-    router.post('/novo', isAuthenticated, [ // joj
+    router.post('/novo', isAuthenticated, [ 
         // validação de formulário
         body('date')
             .notEmpty().withMessage('Adicione uma Data')
@@ -48,13 +48,13 @@ const task = require('../models/task')
             }).save()
                 .then((createdTask) => { 
                     req.flash("successMsg", 'Nova Tarefa Criada!') // atribui a msg a variavel global successMsg
-                    
+                    res.setHeader('X-Flash-Success', 'Nova Tarefa Criada!')
+                    // caso queira a tarefa como resposta em formato json
                     if (req.headers['json'] == 'true'){ 
                         const responseObject = {
                             title: createdTask.title,
                             description: createdTask.description,
                             date: createdTask.date,
-                            // Adicione apenas os campos necessários
                         };
                         return res.status(201).json({ responseObject });
                     } else { 
@@ -62,7 +62,8 @@ const task = require('../models/task')
                     }
                 })
                 .catch((err) => { 
-                    req.flash("errorMsg", 'Houve um erro ao criar a tarefa' + err)
+                    req.flash("errorMsg", 'Houve um erro ao criar a tarefa: ' + err)
+                    res.setHeader('X-Flash-Error', 'Houve um erro ao criar a tarefa: ' + err)
                     res.redirect("/tarefa/add")
                 })
         }
@@ -78,12 +79,19 @@ const task = require('../models/task')
             })
             .then(() => {
                 req.flash("successMsg", 'Tarefa deletada com sucesso');
-                // criando cabeçalho com uma mensagem de retorno
-                res.setHeader('X-Flash-Success', 'Tarefa deletada com sucesso').redirect('/');
+                if(req.headers['no-redirect'] === 'true'){
+                    res.setHeader('X-Flash-Success', 'Tarefa deletada com sucesso')
+                    return res.send('Success!!')
+                }
+                res.redirect('/');
             })
             .catch(err => {
                 req.flash("errorMsg", err.message);
-                res.setHeader('X-Flash-Error', 'Tarefa não encontrada ou não autorizada').redirect('/');
+                if(req.headers['no-redirect'] === 'true'){
+                    res.setHeader('X-Flash-Error', 'Tarefa não encontrada ou não autorizada')
+                    return res.send('Error!!')
+                }
+                res.redirect('/');
             });
     })
 
@@ -91,20 +99,23 @@ const task = require('../models/task')
         task.findOne({token: req.query.token, userId: req.user._id})
             .then((task) => { 
                 if(task){
-                    res.setHeader('X-Flash-Success', 'Tarefa encontrada com sucesso')
                     const responseObject = {
                         title: task.title,
                         description: task.description,
                         date: task.date,
                     };
-                    return res.render('tarefa/editTarefa', {task: responseObject})
+                    res.setHeader('X-Flash-Success', 'Tarefa encontrada com sucesso')
+                    return res.status(200).render('tarefa/editTarefa', {task: responseObject})
                 } else {
                     throw new Error('Tarefa não encontrada ou não autorizada')
                 }
             }) 
             .catch((err) => {
                 req.flash('errorMsg', err.message)
-                res.setHeader('X-Flash-Error', 'Tarefa não encontrada ou não autorizada')
+                if(req.headers['no-redirect'] === 'true'){
+                    res.setHeader('X-Flash-Error', err.message)
+                    return res.send(err.message)
+                }
                 res.redirect('/');
             })
     })
@@ -131,7 +142,10 @@ const task = require('../models/task')
             let errorsArray = validationResult(req).array()
 
             req.flash('errorMsg', errorsArray.map(err => err.msg))
-            res.setHeader('X-Flash-Error', 'validação de formulário')
+            if(req.headers['no-redirect'] === 'true'){
+                res.setHeader('X-Flash-Error', 'validação de formulário')
+                return res.send('error!!')
+            }
             res.redirect(`/tarefa/editar?token=${req.body.token}`); // redireciona a url usando req.query
         } else {
             // procura a task na db e faz as alterações
@@ -139,6 +153,10 @@ const task = require('../models/task')
                 .then((task) => {
                     if (!task) {
                         req.flash('errorMsg', 'Tarefa não encontrada');
+                        if(req.headers['no-redirect'] === 'true'){
+                            res.setHeader('X-Flash-Error', 'Tarefa não encontrada')
+                            return res.send('error!!')
+                        }
                         return res.redirect('/');
                     }
 
@@ -152,12 +170,13 @@ const task = require('../models/task')
                     if (!editedTask) return; // Se a edição falhar por algum motivo
 
                     req.flash("successMsg", 'Tarefa editada com sucesso');
+                    res.setHeader('X-Flash-Success', 'Tarefa editada com sucesso')
+                    // caso queira receber como resposta a tarefa em formato json
                     if (req.headers['json'] === 'true'){ 
                         const responseObject = {
                             title: editedTask.title,
                             description: editedTask.description,
                             date: editedTask.date,
-                            // Adicione apenas os campos necessários
                         };
                         return res.status(200).json({ responseObject });
                     } else { 
@@ -166,7 +185,10 @@ const task = require('../models/task')
                 })
                 .catch((err) => {
                     req.flash('errorMsg', 'Houve um erro ao processar a tarefa');
-                    res.setHeader('X-Flash-Error', 'Houve um erro ao processar a tarefa')
+                    if(req.headers['no-redirect'] === 'true'){
+                        res.setHeader('X-Flash-Error', 'Houve um erro ao processar a tarefa')
+                        return res.send('error!!')
+                    }
                     res.redirect('/');
                 });
         }

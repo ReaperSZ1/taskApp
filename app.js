@@ -54,7 +54,8 @@
         app.use(express.static(path.join(__dirname, 'public'))) 
     // Session 
         app.use(session({ 
-            secret:process.env.SESSION_SECRET, resave: true, saveUninitialized: true, 
+            secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true, 
+            cookie: { httpOnly: true}, // Evita XSS
             store: MongoStore.create({ 
                 mongoUrl: mongoURI, 
                 collectionName: 'sessions' 
@@ -88,13 +89,13 @@
 // Routes
     app.get('/', (req, res) => {
         const isLoggedIn = req.isAuthenticated() 
-        res.render('index', { isLoggedIn })
+        res.status(200).render('index', { isLoggedIn })
     })
 
     // Exemplo de rota no Express para buscar todas as tarefas de uma data específica
     app.get('/tarefas', isAuthenticated, async (req, res) => {
         const Data = req.query.data;    
-        const userId = req.user?._id; 
+        const userId = req.user?._id;
 
         // Validação do parâmetro `data`
         if (!Data || isNaN(new Date(Data).getTime())) {

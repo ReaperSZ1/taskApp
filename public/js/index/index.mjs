@@ -84,7 +84,7 @@ function showTasks(day) {
             return response.json()
         })
         .then(tasks => { 
-            renderTasks(tasks, taskList); // file:///c:/nodejs/taskApp/public/indexModules/taskRender.mjs
+            renderTasks(tasks, taskList); // file:///c:/nodejs/taskApp/public/js/index/taskRender.mjs
             document.getElementById('p').innerText = ''
             taskListTitle.textContent = `Lista de Tarefas para o dia ${day}, de ${monthName}, de ${year}`;
         }) 

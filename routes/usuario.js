@@ -73,11 +73,15 @@ const passport = require('passport')
                                 novoUsuario.save()
                                     .then(() => {
                                         req.flash('successMsg', 'Usuário criado com sucesso! Acesse sua conta!')
-                                        res.setHeader('X-Flash-Success', 'Usuário criado com sucesso! Acesse sua conta!')
+                                        if(req.headers['no-redirect'] === 'true'){
+                                            res.setHeader('X-Flash-Success', 'Usuário criado com sucesso! Acesse sua conta!')
+                                            return res.send('Sucess!!')
+                                        }
                                         res.redirect('/')
                                     })
                                     .catch((err) => {
                                         req.flash('errorMsg', 'Houve um Erro ao criar o usuario tente novamente')
+                                        res.setHeader('X-Flash-Error', 'Houve um Erro ao criar o usuario tente novamente')
                                         res.redirect('/usuarios/registro')
                                     })
                             }
@@ -92,12 +96,15 @@ const passport = require('passport')
     })
 
     router.get('/login', (req, res) => {
-        res.render('usuarios/login')
+        res.status(200).render('usuarios/login')
     })
 
     router.post('/login/novo', (req, res, next) => {
         passport.authenticate('local', (err, user, info) => {
-            if (err) return next(err); // Trate qualquer erro
+            if (err) {
+                res.setHeader('X-Flash-Error', 'Houve um Erro inesperado')
+                return next(err); // Trate qualquer erro
+            }
             
             if (!user) {
                 req.flash('errorMsg', info.message || 'Erro de autenticação');
@@ -107,11 +114,17 @@ const passport = require('passport')
     
             // Se a autenticação for bem-sucedida
             req.logIn(user, (err) => {
-                if (err) return next(err);
+                if (err) {
+                    res.setHeader('X-Flash-Error', 'Houve um erro inesperado')
+                    return next(err);
+                }
                 
+                if(req.headers['no-redirect'] === 'true'){
+                    res.setHeader('X-Flash-Success', 'Login realizado com sucesso!')
+                    return res.send('Sucess!!')
+                }
                 req.flash('successMsg', 'Login realizado com sucesso!');
-                res.setHeader('X-Flash-Success', 'Login realizado com sucesso!')
-                res.redirect('/');
+                res.redirect('/'); // usar redirect da bug no test-api
             });
         })(req, res, next);
     });
@@ -123,7 +136,10 @@ const passport = require('passport')
                 return next(err) 
             } else {
                 req.flash("successMsg", 'Conta Deslogada!')
-                res.setHeader('X-Flash-Success', 'Conta Deslogada!')
+                if(req.headers['no-redirect'] === 'true'){
+                    res.setHeader('X-Flash-Success', 'Conta Deslogada!')
+                    return res.send('Sucess!!')
+                }
                 res.redirect('/')
             }
         })
