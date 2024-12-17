@@ -7,10 +7,11 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch: # Permite executar o pipeline manualmente
 
 jobs:
   test: 
-    runs-on: ubuntu-latest # maquina virtual no qual será rodado os tests
+    runs-on: ubuntu-latest # Máquina virtual para rodar os testes
 
     steps:
       # Etapa 1: Fazer checkout do código
@@ -27,7 +28,25 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Etapa 4: Executar testes com Newman
+      # Etapa 4: Iniciar o servidor em background
+      - name: Start server
+        run: npm start &
+        env:
+          NODE_ENV: test
+
+      # Etapa 5: Aguardar o servidor iniciar
+      - name: Wait for server to start
+        run: |
+          for i in {1..10}; do
+            if nc -z localhost 8081; then
+              echo "Server is up!"
+              break
+            fi
+            echo "Waiting for server..."
+            sleep 5
+          done
+
+      # Etapa 6: Executar testes com Newman
       - name: Run API tests with Postman/Newman
         run: npm run test-api
 
