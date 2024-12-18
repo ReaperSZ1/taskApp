@@ -65,8 +65,6 @@
         app.use(passport.session()) 
         app.use(flash()) 
     // Helmet
-        const helmet = require('helmet');
-
         app.use(helmet.contentSecurityPolicy({
             directives: {
                 defaultSrc: ["'none'"], // Impede o carregamento de qualquer recurso, exceto os especificados explicitamente
