@@ -28,10 +28,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Etapa 4: Iniciar o servidor em primeiro plano (não em background)
+      # Etapa 4: Iniciar o servidor (em primeiro plano)
       - name: Start server
         run: |
-          nohup npm start &
+          npm start &  # Rodar em background
           sleep 10  # Aguardar 10 segundos para garantir que o servidor tenha tempo para iniciar
         env:
           NODE_ENV: test
@@ -39,13 +39,13 @@ jobs:
       # Etapa 5: Aguardar o servidor iniciar
       - name: Wait for server to start
         run: |
-          for i in {1..10}; do
+          for i in {1..20}; do  # Aumenta o número de tentativas
             if nc -z localhost 8081; then
               echo "Server is up!"
               break
             fi
             echo "Waiting for server..."
-            sleep 5
+            sleep 10  # Aumenta o tempo de espera entre tentativas
           done
 
       # Etapa 6: Executar testes com Newman
