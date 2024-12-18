@@ -28,9 +28,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Etapa 4: Iniciar o servidor em background
+      # Etapa 4: Iniciar o servidor em primeiro plano (não em background)
       - name: Start server
-        run: npm start &
+        run: |
+          nohup npm start &
+          sleep 10  # Aguardar 10 segundos para garantir que o servidor tenha tempo para iniciar
         env:
           NODE_ENV: test
 
