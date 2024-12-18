@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config()
 
 // Defina uma chave secreta para assinar o token (isso deve ser mantido em segredo)
 const SECRET_KEY = process.env.JWT_SECRET;
