@@ -31,12 +31,6 @@ jobs:
       # Etapa 4: Conectar ao servidor remoto e executar os testes
       - name: Run tests on remote server
         run: |
-<<<<<<< HEAD
-          export MONGO_URI=${{ secrets.MONGO_URI }}  # Usar o Mongo URI do GitHub Secret
-          npm run test-api  # Rodar os testes diretamente no servidor remoto
-        env:
-          NODE_ENV: test  # Variáveis de ambiente de teste
-=======
           echo "Running tests on remote server..."
           export MONGO_URI=${{ secrets.MONGO_URI }}  # Usar o Mongo URI do GitHub Secret
           echo "Connecting to remote MongoDB..."
@@ -51,7 +45,6 @@ jobs:
           curl -I ${{ secrets.SERVER_URL }} || exit 1  # Verificar se o servidor remoto está acessível
         env:
           SERVER_URL: ${{ secrets.SERVER_URL }}  # URL do servidor remoto, pode ser configurada nos secrets
->>>>>>> 36d1062ba222cec6aeac9f21a1c8a9c8f7335e0e
 
   deploy:
     needs: test
@@ -71,10 +64,6 @@ jobs:
 
       # Etapa 2: Deploy para produção
       - name: Deploy to Production
-<<<<<<< HEAD
-        run: npm run deploy  # Deploy diretamente para o servidor remoto
-=======
         run: |
           echo "Deploying to production server..."
           npm run deploy  # Deploy diretamente para o servidor remoto
->>>>>>> 36d1062ba222cec6aeac9f21a1c8a9c8f7335e0e
