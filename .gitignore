@@ -6,6 +6,9 @@
 __TEST__/
 coverage/
 
+# ignore o backup
+/backups/
+
 # Ignore node_modules
 node_modules/
 
