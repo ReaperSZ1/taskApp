@@ -65,17 +65,46 @@
         app.use(passport.session()) 
         app.use(flash()) 
     // Helmet
+        const helmet = require('helmet');
+
         app.use(helmet.contentSecurityPolicy({
-            // Helmet para configurar políticas de segurança (CSP e outras)
             directives: {
+                defaultSrc: ["'none'"], // Impede o carregamento de qualquer recurso, exceto os especificados explicitamente
                 scriptSrc: [
                     "'self'", // Permite scripts do próprio domínio
                     "https://cdn.jsdelivr.net", // Permite scripts do CDN específico
+                    "https://www.gstatic.com" // Permite scripts de Google (exemplo para Google Fonts)
                 ],
-                scriptSrcElem: ["'self'", "https://cdn.jsdelivr.net"],
-                scriptSrcAttr: ["'self'"],
-            }
-        }));           
+                scriptSrcElem: [
+                    "'self'", 
+                    "https://cdn.jsdelivr.net",
+                    "https://www.gstatic.com" // Permite scripts de Google
+                ],
+                scriptSrcAttr: [
+                    "'self'"
+                ],
+                styleSrc: [
+                    "'self'", // Permite estilos do próprio domínio
+                    "https://cdn.jsdelivr.net", // Permite estilos do CDN específico
+                    "https://fonts.googleapis.com", // Permite estilos do Google Fonts
+                    "https://www.gstatic.com" // Permite estilos de Google
+                ],
+                styleSrcElem: [
+                    "'self'", 
+                    "https://cdn.jsdelivr.net",
+                    "https://fonts.googleapis.com", // Permite estilos do Google Fonts
+                    "https://www.gstatic.com" // Permite estilos de Google
+                ],
+                fontSrc: [
+                    "'self'", // Permite fontes do próprio domínio
+                    "https://fonts.gstatic.com" // Permite fontes do Google Fonts
+                ],
+                connectSrc: ["'self'"], // Permite conexões com o próprio domínio (ajuste conforme necessário para APIs externas)
+                imgSrc: ["'self'", "data:"], // Permite imagens do próprio domínio e dados inline
+                objectSrc: ["'none'"], // Bloqueia objetos (como Flash, por exemplo)
+                upgradeInsecureRequests: [], // Permite a atualização de URLs HTTP para HTTPS
+            },
+        }));
         // MiddleWare 
         app.use((req, res, next) => {
             // variaveis globais acessiveis no handlebars
