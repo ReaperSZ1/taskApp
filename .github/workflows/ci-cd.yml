@@ -28,32 +28,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Etapa 4: Iniciar o servidor (em primeiro plano)
-      - name: Start server
+      # Etapa 4: Conectar ao servidor remoto e executar os testes
+      - name: Run tests on remote server
         run: |
-          npm start &  # Rodar em background
-          sleep 10  # Aguardar 10 segundos para garantir que o servidor tenha tempo para iniciar
+          export MONGO_URI=${{ secrets.MONGO_URI }}  # Usar o Mongo URI do GitHub Secret
+          npm run test-api  # Rodar os testes diretamente no servidor remoto
         env:
-          NODE_ENV: test
-
-      # Etapa 5: Aguardar o servidor iniciar
-      - name: Wait for server to start
-        run: |
-          for i in {1..20}; do  # Aumenta o número de tentativas
-            if nc -z localhost 8081; then
-              echo "Server is up!"
-              break
-            fi
-            echo "Waiting for server..."
-            sleep 10  # Aumenta o tempo de espera entre tentativas
-          done
-
-      # Etapa 6: Executar testes com Newman
-      - name: Run API tests with Postman/Newman
-        run: npm run test-api
+          NODE_ENV: test  # Variáveis de ambiente de teste
 
   deploy:
-    # Este job depende do job de testes, ele só será executado se o job 'test' passar
     needs: test
     runs-on: ubuntu-latest
 
@@ -62,4 +45,4 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy to Production
-        run: npm run deploy
+        run: npm run deploy  # Deploy diretamente para o servidor remoto
