@@ -54,7 +54,7 @@
         app.use(express.static(path.join(__dirname, 'public'))) 
     // Session 
         app.use(session({ 
-            secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true, 
+            secret: process.env.SESSION_SECRET || 'jooj', resave: true, saveUninitialized: true, 
             cookie: { httpOnly: true}, // Evita XSS
             store: MongoStore.create({ 
                 mongoUrl: mongoURI, 
