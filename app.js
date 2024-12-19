@@ -65,44 +65,28 @@
         app.use(passport.session()) 
         app.use(flash()) 
     // Helmet
-        app.use(helmet.contentSecurityPolicy({
-            directives: {
-                defaultSrc: ["'none'"], // Impede o carregamento de qualquer recurso, exceto os especificados explicitamente
-                scriptSrc: [
-                    "'self'", // Permite scripts do próprio domínio
-                    "https://cdn.jsdelivr.net", // Permite scripts do CDN específico
-                    "https://www.gstatic.com" // Permite scripts de Google (exemplo para Google Fonts)
-                ],
-                scriptSrcElem: [
-                    "'self'", 
-                    "https://cdn.jsdelivr.net",
-                    "https://www.gstatic.com" // Permite scripts de Google
-                ],
-                scriptSrcAttr: [
-                    "'self'"
-                ],
+      app.use(
+          helmet({
+            contentSecurityPolicy: {
+              directives: {
+                defaultSrc: ["'self'"], // Permite recursos do próprio domínio
+                scriptSrc: ["'self'", "https://cdn.jsdelivr.net"], // Scripts externos permitidos
                 styleSrc: [
-                    "'self'", // Permite estilos do próprio domínio
-                    "https://cdn.jsdelivr.net", // Permite estilos do CDN específico
-                    "https://fonts.googleapis.com", // Permite estilos do Google Fonts
-                    "https://www.gstatic.com" // Permite estilos de Google
+                  "'self'",
+                  "'unsafe-inline'", // Necessário se houver estilos inline
+                  "https://www.gstatic.com", // Adicione esta origem
                 ],
                 styleSrcElem: [
-                    "'self'", 
-                    "https://cdn.jsdelivr.net",
-                    "https://fonts.googleapis.com", // Permite estilos do Google Fonts
-                    "https://www.gstatic.com" // Permite estilos de Google
+                  "'self'",
+                  "'unsafe-inline'", // Adicione para permitir estilos inline em elementos
+                  "https://www.gstatic.com",
                 ],
-                fontSrc: [
-                    "'self'", // Permite fontes do próprio domínio
-                    "https://fonts.gstatic.com" // Permite fontes do Google Fonts
-                ],
-                connectSrc: ["'self'"], // Permite conexões com o próprio domínio (ajuste conforme necessário para APIs externas)
-                imgSrc: ["'self'", "data:"], // Permite imagens do próprio domínio e dados inline
-                objectSrc: ["'none'"], // Bloqueia objetos (como Flash, por exemplo)
-                upgradeInsecureRequests: [], // Permite a atualização de URLs HTTP para HTTPS
+                imgSrc: ["'self'", "data:", "https:"], // Permite imagens inline e externas
+                connectSrc: ["'self'", "https://your-api.com"], // APIs externas permitidas
+              },
             },
-        }));
+          })
+        );
         // MiddleWare 
         app.use((req, res, next) => {
             // variaveis globais acessiveis no handlebars
