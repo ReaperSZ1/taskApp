@@ -141,5 +141,15 @@
     app.use('/tarefa', Task) 
 // Others
     const PORT = process.env.PORT || 8081 
-    app.listen(PORT, () => { console.log('Server ON'); })
+    app.listen(PORT, () => { 
+        let local = ''
+
+        if(PORT == 8081)
+            local = 'LocalHost'
+        else 
+            local = 'Remote'
+
+        console.log('Server ON => ' + local);
+     })
+  
   
