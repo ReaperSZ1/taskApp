@@ -20,9 +20,6 @@
     
 // #region Settings 
     // MongoURI - verifica se vou rodar o server no local ou no render
-        // verifica se estou conectando via localhost
-        const isProduction = process.env.HOSTNAME && !process.env.HOSTNAME.includes('localhost');
-        process.env.NODE_ENV = isProduction ? 'production' : 'development';
         // alterna o valor do connect
         const mongoURI = process.env.NODE_ENV === 'production' 
             ? process.env.MONGO_URI_PROD 
