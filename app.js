@@ -20,7 +20,7 @@
     
 // #region Settings 
     // MongoURI - verifica se vou rodar o server no local ou no render
-        // alterna o valor do connect
+        // alterna o valor do Uri - abra o node env e altere o valor: file:///c:\nodejs\taskApp\.env
         const mongoURI = process.env.NODE_ENV === 'production' 
             ? process.env.MONGO_URI_PROD 
             : process.env.MONGO_URI_DEV;
@@ -30,6 +30,7 @@
             process.exit(1); // Interrompe a execução se a URI não estiver definida
         }
     // Mongoose 
+    console.log(mongoURI)
         mongoose.connect(mongoURI) // esse mongouri determina se vai conectar pelo local ou pelo server
             .then(() => { console.log('Mongo Connected'); })
             .catch((err) => { console.log('An error occurred when trying to connect to the server: ' + err); })
@@ -139,14 +140,10 @@
 // Others
     const PORT = process.env.PORT || 8081 
     app.listen(PORT, () => { 
-        let local = ''
-
         if(PORT == 8081)
-            local = 'LocalHost'
+            console.log('Server ON => LocalHost');
         else 
-            local = 'Remote'
-
-        console.log('Server ON => ' + local);
+            console.log('Server ON => Remote');
      })
   
   
