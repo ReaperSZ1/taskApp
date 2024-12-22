@@ -58,4 +58,4 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
             -H "Content-Type: application/json" \
             -d '{"clearCache":true}' \
-            https://api.render.com/v1/services/srv-cthke9jv2p9s73chk2dg/deploys
+            https://api.render.com/v1/services/${{ secrets.SERVICE_ID }}/deploys
