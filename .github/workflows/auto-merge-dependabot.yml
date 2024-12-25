@@ -1,0 +1,22 @@
+name: Auto-merge Dependabot updates
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - labeled  # Executa quando uma PR recebe um rótulo específico
+
+jobs:
+  merge:
+    if: github.actor == 'dependabot[bot]' && contains(github.event.pull_request.labels.*.name, 'automerge')
+    runs-on: ubuntu-latest
+    steps:
+      # Configurar o GitHub CLI para mesclar a PR
+      - name: Set up GitHub CLI
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+      
+      # Mesclar a PR automaticamente
+      - name: Merge Dependabot PRs
+        run: gh pr merge ${{ github.event.pull_request.number }} --merge

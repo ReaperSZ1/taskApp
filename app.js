@@ -8,7 +8,6 @@
     const mongoose = require('mongoose')
     const helmet = require('helmet') // prevent xss attacks
     const path = require('path') 
-    const cors = require('cors');
     
     const passport = require('passport');
     require('./config/auth')(passport)
@@ -48,15 +47,6 @@
          }))
         app.set('views', path.join(__dirname, 'views')); // Defina o caminho absoluto para o diretório de views
         app.set('view engine', 'handlebars')
-    // CORS
-        app.use(cors({
-            origin: [
-                'http://localhost:8081', // Domínio remoto
-                //'http://localhost:8081' // Localhost para desenvolvimento
-            ],
-            methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos HTTP permitidos
-            credentials: true // Permite cookies e autenticação
-        }));
     // Public  
         app.use(express.static(path.join(__dirname, 'public'))) 
     // Session 

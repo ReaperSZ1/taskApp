@@ -2,7 +2,6 @@
 .env
 
 # ignorar arquivos __TEST__
-
 __TEST__/
 coverage/
 

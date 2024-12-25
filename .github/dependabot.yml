@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "npm" # Gerenciador de pacotes usado (Node.js)
+    directory: "/"           # Diretório do `package.json`
+    schedule:
+      interval: "weekly"     # Verificar atualizações semanalmente
+    commit-message:
+      prefix: "deps"         # Prefixo para os commits
+    open-pull-requests-limit: 5 # Limite de PRs abertas simultaneamente
+    labels:
+      - automerge
+    ignore:
+      - dependency-name: "lodash" # Ignorar atualizações para essa dependência
+        versions: ["<4.17.0"]     # Apenas versões específicas
