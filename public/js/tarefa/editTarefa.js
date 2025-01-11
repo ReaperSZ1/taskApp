@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     populateDays(currentMonth, currentYear);
-    daySelect.value = currentDay;
+    daySelect.value = taskDay;
 
     // Atualizar campo oculto de data no formato desejado
     function updateHiddenDateField() {

@@ -103,6 +103,7 @@ const task = require('../models/task')
                         title: task.title,
                         description: task.description,
                         date: task.date,
+                        token: task.token
                     };
                     res.setHeader('X-Flash-Success', 'Tarefa encontrada com sucesso')
                     return res.status(200).render('tarefa/editTarefa', {task: responseObject})

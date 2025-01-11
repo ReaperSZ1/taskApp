@@ -23,7 +23,7 @@
         // alterna o valor do Uri - abra o node env e altere o valor: file:///c:\nodejs\taskApp\.env
         const mongoURI = process.env.NODE_ENV === 'production' 
             ? process.env.MONGO_URI_PROD 
-            : process.env.MONGO_URI_DEV;
+            : process.env.MONGO_URI_DEV
 
         if (!mongoURI) {
             console.error("Error: MongoDB URI is not defined.");
@@ -99,24 +99,21 @@
         const isLoggedIn = req.isAuthenticated() 
         res.status(200).render('index', { isLoggedIn })
     })
-
-    // Exemplo de rota no Express para buscar todas as tarefas de uma data específica
+    // api
     app.get('/tarefas', isAuthenticated, async (req, res) => {
         const Data = req.query.data;    
         const userId = req.user?._id;
-
         // Validação do parâmetro `data`
         if (!Data || isNaN(new Date(Data).getTime())) {
             return res.status(400).json({ error: 'A data fornecida é inválida ou está ausente. Use o formato YYYY-MM-DD.' });
         }
-
         // Convertendo a data para o formato de início e fim do dia
         const startOfDay = new Date(Data);
         startOfDay.setHours(0, 0, 0, 0);  // Ajusta para 00:00:00.000
-
+        //
         const endOfDay = new Date(Data);
         endOfDay.setHours(23, 59, 59, 999); // Ajusta para 23:59:59.999
-
+        //
         try {
             // Buscando tarefas dentro do intervalo de tempo do dia
             const tarefas = await task.find({

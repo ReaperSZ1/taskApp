@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const hiddenDateInput = document.getElementById("date");
 
     const date = new Date();
-    const currentDay = date.getDate();
     const currentMonth = date.getMonth(); // Mês é 0-indexado (0 = Janeiro)
     const currentYear = date.getFullYear();
 
@@ -34,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
         option.textContent = month;
         monthSelect.appendChild(option);
     });
-    monthSelect.value = currentMonth;
 
     // Preencher o campo "Hora" e "Minuto"
     for (let i = 0; i < 24; i++) {
@@ -63,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     populateDays(currentMonth, currentYear);
-    daySelect.value = currentDay;
 
     // Função para sanitizr os valores de select 
     function validateSelectValue(value, min, max) {

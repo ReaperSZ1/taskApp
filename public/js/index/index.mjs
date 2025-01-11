@@ -60,9 +60,10 @@ function showTasks(day) {
     const taskListTitle = document.getElementById('task-list-title');
     const monthName = monthNames[currentMonth];
     const year = currentYear;
-
+    // pega as tarefas existentes e restaura a pagina
     const taskList = document.getElementById('task-items');
-    taskList.innerHTML = ''
+    if(taskList)
+        taskList.innerHTML = ''
 
     // Formata a data desejada (ajuste conforme necessário)
     const selectedDate = new Date(currentYear, currentMonth, day); // Criando o objeto Date
