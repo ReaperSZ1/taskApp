@@ -28,8 +28,12 @@ jobs:
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
         run: npm install
+      
+      # Etapa 4: Executar testes Cypress
+      - name: Run Cypress tests
+        run: npx cypress run
 
-      # Etapa 4: Configurar conexão com MongoDB remoto e rodar os testes
+      # Etapa 5: Configurar conexão com MongoDB remoto e rodar os testes
       - name: Run tests with remote MongoDB
         run: |
           echo "Setting up MongoDB URI..."
@@ -40,7 +44,7 @@ jobs:
           NODE_ENV: test  # Ambiente de testes
           MONGO_URI: ${{ secrets.REMOTE_MONGO_URI }}  # URI remota do MongoDB
 
-      # Etapa 5: Confirmar se o servidor remoto está acessível antes de rodar os testes
+      # Etapa 6: Confirmar se o servidor remoto está acessível antes de rodar os testes
       - name: Confirm remote server connection
         run: |
           echo "Checking connection to remote server..."
