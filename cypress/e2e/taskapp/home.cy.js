@@ -3,7 +3,8 @@ describe('index', () => {
     describe('disconnected', () => {
         // visit 
         beforeEach(() => {
-            cy.visit('http://localhost:8081');
+            cy.visit('https://taskapp-481i.onrender.com');
+            // https://taskapp-481i.onrender.com // http://localhost:8081/
         })
         it('home page', () => {
             // it check if the user is logged out
@@ -39,7 +40,7 @@ describe('index', () => {
             // get a set-cookie from request
             cy.request({
                 method: 'POST',
-                url: 'http://localhost:8081/usuarios/login/novo',
+                url: 'https://taskapp-481i.onrender.com/usuarios/login/novo',
                 body: {
                   email: 'gabrielsil20177@gmail.com',
                   senha: '123123'
@@ -74,7 +75,7 @@ describe('index', () => {
         })
         // visit
         beforeEach(() => {
-            cy.visit('http://localhost:8081');
+            cy.visit('https://taskapp-481i.onrender.com');
         })
         it('tests', () => {
             // functions
@@ -110,6 +111,7 @@ describe('index', () => {
                             const title = task.title
                             const description = task.description
                             const date = new Date(task.date)
+                            cy.log(task.date)
                             const year = date.getFullYear()
                             const month = date.getMonth()
                             const day = date.getDate()
@@ -120,6 +122,7 @@ describe('index', () => {
                             cy.get('#description').should('have.text', `${description}`)
                             cy.get('#hour').should('have.value', hour)
                             cy.get('#minute').should('have.value', minute)
+                            cy.wait(2000)
                             cy.get('#day').should('have.value', day)
                             cy.get('#month').should('have.value', month)
                             cy.get('#year').should('have.value', year)

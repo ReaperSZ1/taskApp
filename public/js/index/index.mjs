@@ -121,4 +121,6 @@ document.getElementById('btn-nextMonth').addEventListener('click', () => changeM
 // Inicialização
 updateMonthTitle(); // Atualiza o título do mês
 generateCalendar(); // Gera o calendário
-showTasks(currentDay); // Exibe as tarefas do dia atual
+document.addEventListener('DOMContentLoaded', () => {
+    showTasks(currentDay); // Exibe as tarefas do dia atual
+})

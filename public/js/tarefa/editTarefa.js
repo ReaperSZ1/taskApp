@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const minuteSelect = document.getElementById('minute');
 
     const date = new Date();
-    const currentDay = date.getDate();
     const currentMonth = date.getMonth(); // Mês é 0-indexado (0 = Janeiro)
     const currentYear = date.getFullYear();
 
