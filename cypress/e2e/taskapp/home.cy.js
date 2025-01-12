@@ -111,7 +111,6 @@ describe('index', () => {
                             const title = task.title
                             const description = task.description
                             const date = new Date(task.date)
-                            cy.log(task.date)
                             const year = date.getFullYear()
                             const month = date.getMonth()
                             const day = date.getDate()
@@ -122,8 +121,10 @@ describe('index', () => {
                             cy.get('#description').should('have.text', `${description}`)
                             cy.get('#hour').should('have.value', hour)
                             cy.get('#minute').should('have.value', minute)
-                            cy.wait(2000)
-                            cy.get('#day').should('have.value', day)
+                            // cy.get('#day').should('have.value', day)
+                            cy.get('#day').should('exist').then(() => {
+                                cy.get('#day').should('have.value', day);
+                            });
                             cy.get('#month').should('have.value', month)
                             cy.get('#year').should('have.value', year)
                     }
@@ -169,7 +170,10 @@ describe('index', () => {
                         })
                     }
                     // click
+                    cy.wait(2000)
                     cy.get('button.edit-btn').first().click()
+                    cy.wait(2000)
+
                     cy.url().should('include', '/tarefa/editar')
                     // checking if the task´s data was correctly added 
                     taskValidation(task)
