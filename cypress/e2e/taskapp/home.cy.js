@@ -1,10 +1,11 @@
 // npx cypress run --spec "cypress\e2e\taskapp/*"
+const url = 'https://taskapp-481i.onrender.com'
+// 'https://taskapp-481i.onrender.com' // 'http://localhost:8081/'
 describe('index', () => {
     describe('disconnected', () => {
         // visit 
         beforeEach(() => {
-            cy.visit('https://taskapp-481i.onrender.com');
-            // https://taskapp-481i.onrender.com // http://localhost:8081/
+            cy.visit(url);
         })
         it('home page', () => {
             // it check if the user is logged out
@@ -40,7 +41,7 @@ describe('index', () => {
             // get a set-cookie from request
             cy.request({
                 method: 'POST',
-                url: 'https://taskapp-481i.onrender.com/usuarios/login/novo',
+                url: `${url}/usuarios/login/novo`,
                 body: {
                   email: 'gabrielsil20177@gmail.com',
                   senha: '123123'
@@ -75,7 +76,7 @@ describe('index', () => {
         })
         // visit
         beforeEach(() => {
-            cy.visit('https://taskapp-481i.onrender.com');
+            cy.visit(url);
         })
         it('tests', () => {
             // functions
@@ -121,10 +122,7 @@ describe('index', () => {
                             cy.get('#description').should('have.text', `${description}`)
                             cy.get('#hour').should('have.value', hour)
                             cy.get('#minute').should('have.value', minute)
-                            // cy.get('#day').should('have.value', day)
-                            cy.get('#day').should('exist').then(() => {
-                                cy.get('#day').should('have.value', day);
-                            });
+                            cy.get('#day').should('have.value', day)
                             cy.get('#month').should('have.value', month)
                             cy.get('#year').should('have.value', year)
                     }
@@ -170,9 +168,7 @@ describe('index', () => {
                         })
                     }
                     // click
-                    cy.wait(2000)
                     cy.get('button.edit-btn').first().click()
-                    cy.wait(2000)
 
                     cy.url().should('include', '/tarefa/editar')
                     // checking if the task´s data was correctly added 
