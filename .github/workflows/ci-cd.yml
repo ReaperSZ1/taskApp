@@ -31,7 +31,7 @@ jobs:
       
       # Etapa 4: Executar testes Cypress
       - name: Run Cypress tests
-        run: npx cypress run --spec "cypress\e2e\taskapp\*"
+        run: npx cypress run --spec "cypress/e2e/taskapp/*"
 
       # Etapa 5: Configurar conexão com MongoDB remoto e rodar os testes
       - name: Run tests with remote MongoDB
