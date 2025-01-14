@@ -2,25 +2,21 @@
     const express = require('express')
     const app = express()
     const handlebars = require('express-handlebars') 
-    const MongoStore = require('connect-mongo');
-    const session = require("express-session")
     const flash = require("connect-flash") 
-    const mongoose = require('mongoose')
-    const helmet = require('helmet') // prevent xss attacks
     const path = require('path') 
-    
     const passport = require('passport');
     require('./config/auth')(passport)
     require('dotenv').config();
-
+ // Configurações
+    const connectDB = require('./config/db');
+    const sessionConfig = require('./config/session');
+    const helmetConfig = require('./config/helmet');
     const isAuthenticated = require('./helpers/isAuthenticated') // Middleware para verificar se o usuário está logado
     const User = require('./routes/usuario') 
     const Task = require('./routes/tarefa') 
     const task = require('./models/task')
-    
 // #region Settings 
-    // MongoURI - verifica se vou rodar o server no local ou no render
-        // alterna o valor do Uri - abra o node env e altere o valor: file:///c:\nodejs\taskApp\.env
+    // MongoURI - alterna entre desenvolvimento e produção dinamicamente. Atalho: file:///c:\nodejs\taskApp\.env
         const mongoURI = process.env.NODE_ENV === 'production' 
             ? process.env.MONGO_URI_PROD 
             : process.env.MONGO_URI_DEV
@@ -29,64 +25,33 @@
             console.error("Error: MongoDB URI is not defined.");
             process.exit(1); // Interrompe a execução se a URI não estiver definida
         }
-    // Mongoose 
-        mongoose.connect(mongoURI) // esse mongouri determina se vai conectar pelo local ou pelo server
-            .then(() => { console.log('Mongo Connected'); })
-            .catch((err) => { console.log('An error occurred when trying to connect to the server: ' + err); })
+    // Conexão com o banco de dados
+        connectDB(mongoURI);
     // Body-Parser
         app.use(express.urlencoded({extended: true}))
         app.use(express.json()) 
-    // Handlebars
-        app.engine('handlebars', handlebars.engine({ 
-            defaultLayout: 'main',
-            partialsDir: path.join(__dirname, 'views/partials'),  // Define o diretório de partials
-            runtimeOptions: { // config do each
-                allowProtoPropertiesByDefault: true,
-                allowProtoMethodsByDefault: true
-            }
-         }))
-        app.set('views', path.join(__dirname, 'views')); // Defina o caminho absoluto para o diretório de views
-        app.set('view engine', 'handlebars')
-    // Public  
-        app.use(express.static(path.join(__dirname, 'public'))) 
     // Session 
-        app.use(session({ 
-            secret: process.env.SESSION_SECRET || 'jooj', resave: true, saveUninitialized: true, 
-            cookie: { httpOnly: true}, // Evita XSS
-            store: MongoStore.create({ 
-                mongoUrl: mongoURI, 
-                collectionName: 'sessions' 
-            })
-        }))
+        app.use(sessionConfig(mongoURI));
         app.use(passport.initialize()) 
         app.use(passport.session()) 
         app.use(flash()) 
     // Helmet
-      app.use(
-          helmet({
-            contentSecurityPolicy: {
-              directives: {
-                defaultSrc: ["'self'"], // Permite recursos do próprio domínio
-                scriptSrc: ["'self'", "https://cdn.jsdelivr.net"], // Scripts externos permitidos
-                styleSrc: [
-                  "'self'",
-                  "'unsafe-inline'", // Necessário se houver estilos inline
-                  "https://www.gstatic.com", // Adicione esta origem
-                ],
-                styleSrcElem: [
-                  "'self'",
-                  "'unsafe-inline'", // Adicione para permitir estilos inline em elementos
-                  "https://www.gstatic.com",
-                ],
-                imgSrc: ["'self'", "data:", "https:"], // Permite imagens inline e externas
-                connectSrc: ["'self'", "https://your-api.com"], // APIs externas permitidas
-              },
-            },
-          })
-        );
-        // MiddleWare 
+        app.use(helmetConfig);
+    // Handlebars
+    app.engine('handlebars', handlebars.engine({ 
+        defaultLayout: 'main',
+        partialsDir: path.join(__dirname, 'views/partials'),  // Define o diretório de partials
+        runtimeOptions: { // config do each
+            allowProtoPropertiesByDefault: true,
+            allowProtoMethodsByDefault: true
+        }
+     }))
+    app.set('views', path.join(__dirname, 'views')); // Defina o caminho absoluto para o diretório de views
+    app.set('view engine', 'handlebars')  
+    // Arquivos estáticos
+        app.use(express.static(path.join(__dirname, '../public'))) 
+    // Variáveis globais
         app.use((req, res, next) => {
-            // variaveis globais acessiveis no handlebars
             res.locals.successMsg = req.flash('successMsg') // armazena mensagens de sucesso temporárias
             res.locals.errorMsg = req.flash('errorMsg') // armazena mensagens de erro personalizadas
             res.locals.error = req.flash('error') // armazena mensagens de erro padrão, especialmente para o Passport
@@ -133,7 +98,7 @@
 
     app.use('/usuarios', User) 
     app.use('/tarefa', Task) 
-// Others
+// inicialização do Servidor
     const PORT = process.env.PORT || 8081 
     app.listen(PORT, () => { 
         if(PORT == 8081)

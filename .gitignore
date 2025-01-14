@@ -1,8 +1,7 @@
 # Ignore .env file
 .env
 
-# ignorar arquivos __TEST__
-__TEST__/
+# ignorar arquivos 
 coverage/
 
 # ignore o backup

@@ -1,6 +1,6 @@
 // npx cypress run --spec "cypress\e2e\taskapp\*"
 const url = 'https://taskapp-481i.onrender.com'
-// 'https://taskapp-481i.onrender.com' // 'http://localhost:8081'
+// const url = 'http://localhost:8081'
 describe('index', () => {
     describe('disconnected', () => {
         // visit 
@@ -164,7 +164,6 @@ describe('index', () => {
                     }
                     // click
                     cy.get('button.edit-btn').first().click()
-
                     cy.url().should('include', '/tarefa/editar')
                     // checking if the task´s data was correctly added 
                     taskValidation(task)
@@ -232,6 +231,7 @@ describe('index', () => {
                 // edit and delete button tests
                 editButton()
             }
+            const day = 10
             // interface tests
             UI_Tests()
             // acessing the nova tarefa
@@ -244,7 +244,7 @@ describe('index', () => {
             cy.get('#minute').select('01',{ force: true })
             cy.get('#year').select('2025',{ force: true })
             cy.get('#month').select('0',{ force: true })
-            cy.get('#day').select(`${10}`,{ force: true })
+            cy.get('#day').select(`${day}`,{ force: true })
             // submit 
             cy.get('form > .btn').click()
             cy.url().should('include', '/')
@@ -260,7 +260,7 @@ describe('index', () => {
                 });
             }).as('getTarefas');
             // click in a random date
-            cy.get(`[data-day='${10}']`).click(); 
+            cy.get(`[data-day='${day}']`).click(); 
             // Intercepta a requisição e armazena a tarefa mais cedo
             cy.wait('@getTarefas').then((interception) => {
                 if(interception.response.body.message){
@@ -271,14 +271,13 @@ describe('index', () => {
                     const tarefasComDescricao = tarefas.filter((tarefa) => tarefa.description.trim() !== '');
                     const tarefaMaisCedo = tarefasComDescricao.sort((a, b) => new Date(a.date) - new Date(b.date))[0];
                     // cy.log(`Tarefa mais cedo com descrição: ${JSON.stringify(tarefaMaisCedo, null, 2)}`);
-                    taskTest(tarefaMaisCedo, 10);
+                    taskTest(tarefaMaisCedo, day);
                 }
             });
             // logout account
             cy.get('.btn').click()
             cy.get('.alert').should('be.visible').and('have.text', 'Conta Deslogada!')
         });
-       
     })
     function UI_Tests() {
         // stores the current date
