@@ -89,7 +89,7 @@
     "moment-timezone": "^0.5.46",
     "mongodb": "^6.9.0",
     "mongodb-connection-string-url": "^3.0.1",
-    "mongoose": "^8.7.2",
+    "mongoose": "^8.9.5",
     "mpath": "^0.9.0",
     "mquery": "^5.0.0",
     "ms": "^2.0.0",
