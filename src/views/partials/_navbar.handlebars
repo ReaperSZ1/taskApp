@@ -6,20 +6,27 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
+        {{!-- Home Button --}}
         <li class="nav-item">
           <a class="nav-link" href="/">Home</a>
         </li>
+        {{!-- New Task Button --}}
         <li class="nav-item">
           <a class="nav-link" href="/tarefa/add">Nova Tarefa</a>
         </li>
+        {{!-- When the user is logged in --}}
         {{#if user}}
+          {{!-- Logout Button --}}
           <li class="nav-item">
             <a class="btn btn-outline-light ms-2" href="/usuarios/logout">Sair</a>
           </li>
+        {{!-- When the user is not logged in --}}
         {{else}}
+          {{!-- Logout Button --}}
           <li class="nav-item">
             <a class="btn btn-outline-light ms-2" href="/usuarios/login">Login</a>
           </li>
+          {{!-- Register Button --}}
           <li class="nav-item">
             <a class="btn btn-success ms-2" href="/usuarios/registro">Registro</a>
           </li>

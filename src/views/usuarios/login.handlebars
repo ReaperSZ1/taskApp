@@ -1,18 +1,21 @@
 <style>
-    /* Paleta de cores cinzas */
+    /* Style for the body of the page, setting the background, text color, and font */
     body {
         background-color: #2b2b2b;
         color: #d3d3d3;
         font-family: Arial, sans-serif;
     }
+    /* Style for h4 headers, including color, margin, and font weight */
     h4 {
         color: #e0e0e0;
         margin-bottom: 20px;
         font-weight: bold;
     }
+    /* Style for labels inside forms, setting the text color */
     .form-label {
         color: #f0f0f0;
     }
+    /* Style for card components, including background, border, and shadow */
     .card {
         background-color: #333333;
         border: 1px solid #4d4d4d;
@@ -23,21 +26,25 @@
         width: 100%;
         max-width: 400px;
     }
+    /* Style for form control inputs, including background, text color, and border */
     .form-control {
         background-color: #3a3a3a;
         color: #d3d3d3;
         border: 1px solid #5a5a5a;
     }
+    /* Hover state for form control inputs, with darker background and consistent text color */
     .form-control:hover {
         background-color: #2f2f2f;
         color: #d3d3d3;
         border: 1px solid #5a5a5a;
     }
+    /* Focus state for form control inputs, highlighting the border and text */
     .form-control:focus {
         background-color: #4b4b4b;
         color: #f0f0f0;
         border-color: #707070;
     }
+    /* Style for success buttons, with background color, padding, and width */
     .btn-success {
         background-color: #428555;
         border: none;
@@ -46,29 +53,32 @@
         padding: 10px;
         transition: background-color 0.3s ease;
     }
+    /* Hover state for success buttons, changing the background to a lighter green */
     .btn-success:hover {
         background-color: rgb(53, 116, 71);
     }
 </style>
 
 <div class="container mt-5">
-    <!-- Botão de Voltar -->
+    {{!-- Back Button --}}
     <a href="/" class="btn btn-secondary">
         🔙 Voltar
     </a>
-
     <h4 class="text-center">Login</h4>
     <div class="card">
         <div class="card-body">
             <form action="/usuarios/login/novo" method="post">
+                {{!-- Email --}}
                 <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
                         <input type="email" class="form-control" name="email" required autocomplete="email">
                 </div>
+                {{!-- Password --}}
                 <div class="mb-3">
                     <label for="senha" class="form-label">Senha:</label>
                         <input type="password" class="form-control" name="senha" required autocomplete="new-password">
                 </div>
+                {{!-- Submit --}}
                 <button class="btn btn-success" type="submit">Acessar</button>
             </form>
         </div>

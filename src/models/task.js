@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-// Definindo o schema para a Tarefa
 const taskSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Referência ao ID do usuário
     title: { type: String, required: true }, 
@@ -11,5 +10,4 @@ const taskSchema = new mongoose.Schema({
     updatedAt: { type: Date, default: Date.now },
 });
 
-// Criando o modelo
 module.exports = mongoose.model('task', taskSchema);

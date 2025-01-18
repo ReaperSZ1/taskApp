@@ -1,36 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendário de Tarefas</title>
-    <link rel="stylesheet" href="/css/index/index.css"> {{!-- file:///c:/nodejs/taskApp/public/css/index/index.css --}}
-    {{!-- o arquivo esta no diretorio public, por que é o padrão do codigo  --}}
+    <meta charset="UTF-8"> // posso apagar
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> // poso apagar
+    {{!-- Shortcut: file:///c:/nodejs/taskApp/public/css/index/index.css --}}
+    <link rel="stylesheet" href="/css/index/index.css"> 
 </head>
 <body>
     <h1 id="month-title">Calendário de Novembro 2024</h1>
-    
-    <!-- Botões de navegação entre os meses -->
+    {{!-- Navigation buttons between the months --}}
     <div class="nav-buttons">
         <button id="btn-lastMonth">Mês Anterior</button>
         <button id="btn-nextMonth">Próximo Mês</button>
     </div>
-    
-    <!-- Calendário -->
+    <!-- Calendar -->
     <div id="calendar" class="calendar"></div>
-
+    {{!-- When the User is loggedin in --}}
     {{#if isLoggedIn}}
-        {{!-- Lista de tarefas --}}
+        {{!-- TaskList --}}
         <div class="task-list" id="task-list">
             <h3 id="task-list-title">Lista de Tarefas</h3>
             <p id="p"></p>
             <ul id="task-items"></ul>
         </div>
+    {{!-- When the User is not loggedin in --}}
     {{else}}
         <p>Por favor, faça login para ver suas tarefas.</p>
     {{/if}}
-
+    {{!-- Shortcut: file:///c:/nodejs/taskApp/public/js/index/index.mjs --}}
     <script type="module" src="/js/index/index.mjs"></script>
-    {{!-- file:///c:/nodejs/taskApp/public/js/index/index.mjs --}}
 </body>
-</html>

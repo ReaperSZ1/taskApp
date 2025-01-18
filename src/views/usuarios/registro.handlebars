@@ -1,16 +1,18 @@
 <style>
-    /* Paleta de cores cinzas */
+    /* General styling for the body to set a dark theme and consistent font */
     body {
         background-color: #2b2b2b;
         color: #d3d3d3;
         font-family: Arial, sans-serif;
     }
+    /* Styling for the header to make it stand out and align it at the center */
     h3 {
         color: #e0e0e0;
         margin-bottom: 20px;
         font-weight: bold;
         text-align: center;
     }
+    /* Card styling for a container with shadow and padding, used for grouping content */
     .card {
         background-color: #333333;
         border: 1px solid #4d4d4d;
@@ -22,23 +24,26 @@
         color: white;
         max-width: 400px;
     }
-
+    /* Styling for form controls to match the dark theme with hover and focus effects */
     .form-control {
         background-color: #3a3a3a;
         color: #d3d3d3;
         border: 1px solid #5a5a5a;
         margin-bottom: 15px;
     }
+    /* Form control hover effect for better user feedback */
     .form-control:hover {
         background-color: #2f2f2f;
         color: #d3d3d3;
         border: 1px solid #5a5a5a;
     }
+    /* Form control focus effect to highlight the currently selected input field */
     .form-control:focus {
         background-color: #4b4b4b;
         color: #f0f0f0;
         border-color: #707070;
     }
+    /* Styling for success buttons with transitions for hover effects */
     .btn-success {
         background-color: #428555;
         border: none;
@@ -47,11 +52,12 @@
         padding: 10px;
         transition: background-color 0.3s ease;
     }
+    /* Success button hover effect to indicate interactivity */
     .btn-success:hover {
         background-color: rgb(53, 116, 71);
     }
-    
 </style>
+
 <!-- Botão de Voltar -->
 <a href="/" class="btn btn-secondary">
     🔙 Voltar
@@ -60,18 +66,19 @@
 <div class="card">
     <div class="card-body">
         <form action="/usuarios/registro/novo" method="post">
+            {{!-- UserName --}}
             <label for="userName">Nome: </label>
                 <input type="text" name="userName" class="form-control" required autocomplete="username">
-
+            {{!-- Email --}}
             <label for="email">Email: </label>
                 <input type="email" name="email" class="form-control" required autocomplete="email">
-
+            {{!-- Password --}}
             <label for="password">Senha: </label>
                 <input type="password" name="password" class="form-control" required autocomplete="new-password">
-
+            {{!-- Repeat your Password --}}
             <label for="password2">Repita sua senha: </label>
                 <input type="password" name="password2" class="form-control" required autocomplete="new-password">
-
+            {{!-- Submit --}}
             <button type="submit" class="btn btn-success mt-2">Criar Conta</button>
         </form>
     </div>

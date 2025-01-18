@@ -1,8 +1,8 @@
-const isAuthenticated = require('../../helpers/isAuthenticated');
+const isAuthenticated = require('../helpers/isAuthenticated');
 
 describe('Middleware isAuthenticated', () => {
     let req, res, next;
-
+    // mock
     beforeEach(() => {
         req = {
             isAuthenticated: jest.fn(),
@@ -11,9 +11,9 @@ describe('Middleware isAuthenticated', () => {
         res = { redirect: jest.fn()};
         next = jest.fn();
     });
-
-    test('Deve chamar next() se o usuário estiver autenticado', () => {
-        req.isAuthenticated.mockReturnValue(true); // Simula o usuário autenticado
+    test('Should call next() if user is authenticated' , () => {
+        // simulate the autheticated user
+        req.isAuthenticated.mockReturnValue(true); 
 
         isAuthenticated(req, res, next);
 
@@ -21,13 +21,14 @@ describe('Middleware isAuthenticated', () => {
         expect(res.redirect).not.toHaveBeenCalled(); // Não deve redirecionar
     });
 
-    test('Deve redirecionar se o usuário não estiver autenticado', () => {
-        req.isAuthenticated.mockReturnValue(false); // Simula o usuário não autenticado
+    test('should redirect if the user is not autheticated', () => {
+        // simulate the not autheticated user
+        req.isAuthenticated.mockReturnValue(false); 
 
         isAuthenticated(req, res, next);
 
         expect(req.flash).toHaveBeenCalledWith('errorMsg', 'Faça o login');
         expect(res.redirect).toHaveBeenCalledWith('/usuarios/login');
-        expect(next).not.toHaveBeenCalled(); // Não deve chamar next
+        expect(next).not.toHaveBeenCalled(); 
     });
 });

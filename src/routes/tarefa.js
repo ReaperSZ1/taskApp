@@ -1,16 +1,17 @@
-const express = require('express')
-const router = express.Router()
-const { body, validationResult } = require('express-validator'); // validaçao de formulários
-const { generateTokenForTask } = require('../helpers/jsonwebtoken'); // gera token para id
-const isAuthenticated = require('../helpers/isAuthenticated') // Middleware para verificar se o usuário está logado
-const task = require('../models/task')
-
+// modules
+    const express = require('express')
+    const router = express.Router()
+    const { body, validationResult } = require('express-validator'); // form validations
+    const { generateTokenForTask } = require('../helpers/jsonwebtoken'); 
+    const isAuthenticated = require('../helpers/isAuthenticated')
+    const task = require('../models/task')
+// routes
     router.get('/add', isAuthenticated, (req, res) => { 
         res.status(200).render('tarefa/addtarefa');
     })
 
     router.post('/novo', isAuthenticated, [ 
-        // validação de formulário
+        // form validation
         body('date')
             .notEmpty().withMessage('Adicione uma Data')
             .isISO8601().withMessage('Data Inválida, Formato correto: YYYY-MM-DD.'),
@@ -18,27 +19,24 @@ const task = require('../models/task')
             .notEmpty().withMessage('Adicione um Titulo')
             .matches(/^[a-zA-Z0-9_,'!\-\s\.]+$/).withMessage('O título não pode conter caracteres especiais') 
             .isLength({ max: 50 }).withMessage('O título não pode ter mais de 50 caracteres')
-            .trim() // Remove espaços extras antes e depois do título
-            .escape(), // Escapa caracteres especiais para evitar XSS
+            .trim() // removes extra spaces before and after of the title
+            .escape(), // escapes especial characters to prevent xss
         body('description')
-            .optional() //  Esta validação permite que o campo de descrição seja vazio.
+            .optional() // this validation allows the description fild to be empty
             .matches(/^[a-zA-Z0-9_,!\-\s\.]*$/).withMessage('A descrição não pode conter caracteres especiais')
-            .trim() // Remove espaços extras antes e depois do título
-            .escape(), // Escapa caracteres especiais para evitar XSS
+            .trim() 
+            .escape(), 
     ],(req, res) => { 
-        const userId = req.user._id; // Pega o _id do usuário logado no Passport ou outra autenticação
-        
+        const userId = req.user._id; 
         const errors = validationResult(req)
 
         if(!errors.isEmpty()){
             let errorsArray = validationResult(req).array()
-
             req.flash('errorMsg', errorsArray.map(err => err.msg))
             res.setHeader('X-Flash-Error', 'validação de formulário')
-            res.redirect('/tarefa/add');  // Redireciona para a URL desejada
+            res.redirect('/tarefa/add'); 
         } else {
             const data = new Date(req.body.date);
-            // colocando os dados da req no schema da task
             new task({ 
                 title: req.body.title, 
                 description: req.body.description,
@@ -47,9 +45,9 @@ const task = require('../models/task')
                 token: generateTokenForTask(req.user._id) 
             }).save()
                 .then((createdTask) => { 
-                    req.flash("successMsg", 'Nova Tarefa Criada!') // atribui a msg a variavel global successMsg
+                    req.flash("successMsg", 'Nova Tarefa Criada!') 
                     res.setHeader('X-Flash-Success', 'Nova Tarefa Criada!')
-                    // caso queira a tarefa como resposta em formato json
+                    // if you want the task as a response in JSON format
                     if (req.headers['json'] == 'true'){ 
                         const responseObject = {
                             title: createdTask.title,
@@ -67,7 +65,7 @@ const task = require('../models/task')
                     res.redirect("/tarefa/add")
                 })
         }
-    })// 
+    })
 
     router.post('/deletar', isAuthenticated, (req, res) => { 
         task.findOne({ token: req.body.token, userId: req.user._id })
@@ -75,7 +73,7 @@ const task = require('../models/task')
                 if (task) 
                     return task.deleteOne();
                 else 
-                    throw new Error("Tarefa não encontrada ou não autorizada"); // entra no catch
+                    throw new Error("Tarefa não encontrada ou não autorizada"); 
             })
             .then(() => {
                 req.flash("successMsg", 'Tarefa deletada com sucesso');
@@ -122,7 +120,7 @@ const task = require('../models/task')
     })
     
     router.post('/editar', isAuthenticated,[
-        // validação de formulário e sanitização
+        // form validation and sanitization
         body('date')
             .notEmpty().withMessage('Adicione uma Data')
             .isISO8601().withMessage('Data Inválida, Formato correto: YYYY-MM-DD.'),
@@ -130,10 +128,10 @@ const task = require('../models/task')
             .notEmpty().withMessage('Adicione um Titulo')
             .matches(/^[a-zA-Z0-9_,'\-\s\.]+$/).withMessage('O título não pode conter caracteres especiais') 
             .isLength({ max: 50 }).withMessage('O título não pode ter mais de 50 caracteres')
-            .trim() // Remove espaços extras antes e depois do título
-            .escape(), // Escapa caracteres especiais para evitar XSS
+            .trim() 
+            .escape(), 
         body('description')
-            .optional() //  Esta validação permite que o campo de descrição seja vazio.
+            .optional()
             .matches(/^[a-zA-Z0-9_,\-\s\.]*$/).withMessage('A descrição não pode conter caracteres especiais')
             .trim().escape()
     ], (req, res) => {
@@ -147,9 +145,9 @@ const task = require('../models/task')
                 res.setHeader('X-Flash-Error', 'validação de formulário')
                 return res.send('error!!')
             }
-            res.redirect(`/tarefa/editar?token=${req.body.token}`); // redireciona a url usando req.query
+            res.redirect(`/tarefa/editar?token=${req.body.token}`);
         } else {
-            // procura a task na db e faz as alterações
+            // find the task in the datase and make changes
             task.findOne({ token: req.body.token, userId: req.user._id })
                 .then((task) => {
                     if (!task) {
@@ -168,11 +166,11 @@ const task = require('../models/task')
                     return task.save();
                 })
                 .then((editedTask) => {
-                    if (!editedTask) return; // Se a edição falhar por algum motivo
+                    if (!editedTask) return; 
 
                     req.flash("successMsg", 'Tarefa editada com sucesso');
                     res.setHeader('X-Flash-Success', 'Tarefa editada com sucesso')
-                    // caso queira receber como resposta a tarefa em formato json
+                    // if you want the task as a response in JSON format
                     if (req.headers['json'] === 'true'){ 
                         const responseObject = {
                             title: editedTask.title,

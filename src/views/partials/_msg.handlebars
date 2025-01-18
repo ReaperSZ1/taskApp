@@ -1,12 +1,9 @@
-<!-- views/partials/msg.handlebars -->
 <style>
-    /* Estilos para o fundo, loader e mensagens */
     body {
         background-color: #302f2f;
         overflow: hidden; /* Evita rolagem durante o loading */
     }
-
-    /* Mensagens de sucesso e erro */
+    /* Styling for Success and Error alert messages */
     .alert {
         padding: 15px;
         border-radius: 8px;
@@ -15,14 +12,14 @@
         font-weight: 500;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     }
-
+    /* styling for success message*/
     .alert-success {
         background-color: #28a745;
         border: 1px solid #218838;
         color: #ffffff;
         transition: background-color 0.3s, transform 0.3s ease-in-out;
     }
-
+    /* style for Error message*/
     .alert-danger {
         text-align: center;
         background-color: #811515;
@@ -32,24 +29,23 @@
         padding: 10px;
         margin-bottom: 15px;
     }
-
+    /* Styling for close button in success and error messages */
     .alert-success .close, .alert-danger .close {
-        color: #ffffff;
-        opacity: 0.7;
+        color: #ffffff; /* White color for the close button */
+        opacity: 0.7; /* Slight transparency for the close button */
     }
-
+    /* Hover effect for close button in success and error messages */
     .alert-success .close:hover, .alert-danger .close:hover {
-        opacity: 1;
+        opacity: 1; /* Removes transparency on hover */
     }
 </style>
-
-<!-- Mensagens Flash -->
+{{!-- Success flash message --}}
 {{#if successMsg}}
     {{#each successMsg}}
         <div class="alert alert-success successMsg">{{this}}</div>
     {{/each}}
 {{/if}} 
-
+{{!-- Error flash message --}}
 {{#if errorMsg}}
     {{#each errorMsg}}
         <div class="alert alert-danger errorMsg">{{this}}</div>

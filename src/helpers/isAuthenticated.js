@@ -1,11 +1,11 @@
-// Middleware para verificar se o usuário está logado
+// middleware to check if the user is logged in
 module.exports = function isAuthenticated(req, res, next) {
+    // if the user is logged in
     if (req.isAuthenticated()) {
-        return next(); // Se o usuário estiver logado, permite continuar para a próxima função
+        return next();
     } else {
         req.flash('errorMsg', 'Faça o login')
-        // res.setHeader('X-Flash-Error', 'Faça o login')
-        res.redirect('/usuarios/login'); // Se o usuário não estiver logado, redireciona para a página de login
+        res.redirect('/usuarios/login'); 
     }
 }
 

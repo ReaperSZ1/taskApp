@@ -1,27 +1,22 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
-
-// Defina uma chave secreta para assinar o token (isso deve ser mantido em segredo)
+// define a secret key to sign the token 
 const SECRET_KEY = process.env.JWT_SECRET;
-
+// if the secret key is not defined
 if (!SECRET_KEY) {
     throw new Error('A chave secreta JWT_SECRET não está definida no ambiente');
 }
-
-// Função para gerar o token para a tarefa
+// function to generate a token for a task
 function generateTokenForTask(taskId) {
-    // Validar o payload
+    // validate the payload
     const idTask = typeof taskId === 'object' && taskId.toString ? taskId.toString() : taskId;
-
+    // check the type of idtask 
     if (typeof idTask !== 'string' && typeof idTask !== 'number') 
         throw new Error('O taskId deve ser uma string ou número válido');
-
+    // create the payload
     const payload = { id: idTask };
-
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' }); // criando o token
+    // create the token
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' }); 
     return token;    
 }
-
 module.exports = { generateTokenForTask };
-
-// codigo testado: '../__TEST__/jsonwebtoken'

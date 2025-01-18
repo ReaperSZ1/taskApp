@@ -1,19 +1,19 @@
 <style>
-   /* Paleta de cores cinzas */
+    /* Gray color palette for background and text */
     body {
         background-color: #2b2b2b;
         color: #d3d3d3;
         font-family: Arial, sans-serif;
         overflow: auto;
     }
-
+    /* Styles for h3 headings */
     h3 {
         color: #e0e0e0;
         margin-bottom: 20px;
         font-weight: bold;
         text-align: center;
     }
-
+    /* Card component styling */
     .card {
         background-color: #333333;
         border: 1px solid #4d4d4d;
@@ -25,7 +25,7 @@
         max-width: 450px;
         color: white;
     }
-
+    /* Input, select, and textarea field styles */
     .form-control, select, textarea {
         text-align: center;
         background-color: #3a3a3a;
@@ -37,39 +37,39 @@
         font-size: 14px;
         width: 100%;
     }
-
+    /* Left-aligns text for specific input fields */
     #title, #description {
         text-align: left;
     }
-
+    /* Hover styles for input, select, and textarea fields */
     .form-control:hover, select:hover, textarea:hover {
         background-color: #2f2f2f;
         color: #d3d3d3;
         border: 1px solid #5a5a5a;
     }
-
+    /* Focus styles for input, select, and textarea fields */
     .form-control:focus, select:focus, textarea:focus {
         background-color: #4b4b4b;
         color: #f0f0f0;
         border-color: #707070;
         outline: none;
     }
-
+    /* Placeholder text styling */
     .form-control::placeholder {
         color: #888888;
     }
-
+    /* Date and time selector container styles */
     .date-select, .time-select {
         display: flex;
         gap: 10px;
         justify-content: space-between;
     }
-
+    /* Styles for select elements inside date and time selectors */
     .date-select select, .time-select select {
         flex: 1;
         min-width: 100px;
     }
-
+    /* Primary button styling */
     .btn-primary {
         background-color: #428555;
         border: none;
@@ -81,11 +81,11 @@
         font-size: 16px;
         cursor: pointer;
     }
-
+    /* Hover effect for primary buttons */
     .btn-primary:hover {
         background-color: rgb(53, 116, 71);
     }
-
+    /* General alert styling */
     .alert {
         margin-bottom: 20px;
         padding: 15px;
@@ -93,70 +93,66 @@
         border-radius: 8px;
         font-weight: bold;
     }
-
+    /* Specific styling for danger alerts */
     .alert-danger {
         color: white;
     }
-
+    /* Styling for labels */
     label {
         display: block;
-        text-align: center;       /* Centraliza o texto dentro do label */
+        text-align: center;
     }
 </style>
 
 <div class="container">
+    {{!-- Back Button --}}
+    <a href="/" class="btn btn-secondary">
+        🔙 Voltar
+    </a>
     <h3>Nova Tarefa</h3>
     <div class="card">
         <div class="card-body">
             <form action="/tarefa/novo" method="post">
+                {{!-- Title --}}
                 <label for="title">Tarefa</label>
                     <input type="text" name="title" id="title" placeholder="Título" class="form-control" required>
-                
+                {{!-- Description --}}
                 <label for="description">Descrição</label>
                     <textarea name="description" id="description" class="form-control" placeholder="(Opcional)"></textarea>
-
-                <!-- Seleção de Data -->
+                <!-- Date Select -->
                 <label for="date">Data</label>
                 <div class="date-select">
-                    <!-- Selecionar Dia -->
+                    <!-- Day Select -->
                     <select name="day" id="day" class="form-control" required>
                         <option value="" disabled selected>Dia</option>
                     </select>
-
-                    <!-- Selecionar Mês -->
+                    <!-- Month Select -->
                     <select name="month" id="month" class="form-control" required>
                         <option value="" disabled selected>Mês</option>
                     </select>
-
-                    <!-- Selecionar Ano -->
+                    <!-- Year Select -->
                     <select name="year" id="year" class="form-control" required>
                         <option value="" disabled selected>Ano</option>
                     </select>
                 </div>
-
-                <!-- Seleção de Hora -->
                 <label for="time">Horário</label>
                 <div class="time-select">
-                    <!-- Selecionar Hora -->
+                    <!-- Hour Select -->
                     <select name="hour" id="hour" class="form-control" required>
                         <option value="" disabled selected>Hora</option>
                     </select>
-
-                    <!-- Selecionar Minuto -->
+                    <!-- Minute Select -->
                     <select name="minute" id="minute" class="form-control" required>
                         <option value="" disabled selected>Minuto</option>
                     </select>
                 </div>
-
-                <!-- Campo oculto para armazenar a data ano, mes, dia, hora, minuto,-->
+                {{!-- it Stores the full date, Year, Month, Day, Hour and Minute --}}
                 <input type="hidden" name="date" id="date" required>
-
+                {{!-- Submit --}}
                 <button type="submit" class="btn btn-primary mt-2">Criar Tarefa</button>
             </form>
         </div>
     </div>
 </div>
-
+{{!-- Shortcut: file:///c:/nodejs/taskApp/public/js/tarefa/addTarefa.js --}}
 <script type="module" src="/js/tarefa/addTarefa.js"></script>
-{{!-- file:///c:/nodejs/taskApp/public/js/tarefa/addTarefa.js --}}
-
