@@ -1,6 +1,6 @@
 // npx cypress run --spec "cypress\e2e\taskapp\*"
-const url = 'https://taskapp-481i.onrender.com'
-// const url = 'http://localhost:8081'
+// const url = 'https://taskapp-481i.onrender.com'
+const url = 'http://localhost:8081'
 describe('index', () => {
     describe('disconnected', () => {
         // visit 

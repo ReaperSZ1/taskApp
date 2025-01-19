@@ -33,26 +33,25 @@ jobs:
       - name: Run Cypress tests
         run: npx cypress run --spec "cypress/e2e/taskapp/*"
 
-      # Etapa 5: Configurar conexão com MongoDB remoto e rodar os testes
-      - name: Run tests with remote MongoDB
+      # Etapa 5: Configurar conexão com MongoDB local e rodar os testes
+      - name: Run tests with local MongoDB
         run: |
           echo "Setting up MongoDB URI..."
-          export MONGO_URI=${{ secrets.REMOTE_MONGO_URI }}  # Usar a URI remota configurada nos GitHub Secrets
-          echo "Running tests with remote MongoDB..."
+          export MONGO_URI=mongodb://localhost:27017/taskapp  # Configuração local para MongoDB
+          echo "Running tests with local MongoDB..."
           npm run test-api  # Comando para rodar os testes no código do projeto
         env:
           NODE_ENV: test  # Ambiente de testes
-          MONGO_URI: ${{ secrets.REMOTE_MONGO_URI }}  # URI remota do MongoDB
+          MONGO_URI: mongodb://localhost:27017/taskapp  # URI local do MongoDB
 
-      # Etapa 6: Confirmar se o servidor remoto está acessível antes de rodar os testes
-      - name: Confirm remote server connection
+      # Etapa 6: Confirmar se o servidor local está acessível antes de rodar os testes
+      - name: Confirm local server connection
         run: |
-          echo "Checking connection to remote server..."
-          curl -I https://taskapp-481i.onrender.com || exit 1  # Verificar se o servidor remoto está acessível
+          echo "Checking connection to local server..."
+          curl -I http://localhost:8081 || exit 1  # Verificar se o servidor local está acessível
         env:
-          SERVER_URL: https://taskapp-481i.onrender.com  # URL do servidor remoto configurada nos secrets
+          SERVER_URL: http://localhost:8081  # URL do servidor local
 
-  
   deploy:
     needs: test
     runs-on: ubuntu-latest

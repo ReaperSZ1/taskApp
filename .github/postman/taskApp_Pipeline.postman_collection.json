@@ -95,9 +95,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{urlRemote}}/usuarios/login/novo",
+							"raw": "{{url}}/usuarios/login/novo",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"usuarios",
@@ -150,9 +150,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{urlRemote}}",
+							"raw": "{{url}}",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							]
 						}
 					},
@@ -192,7 +192,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"const dia = 12\r",
+									"const dia = 13\r",
 									"pm.collectionVariables.set('date', '2024-12-' + dia)"
 								],
 								"type": "text/javascript",
@@ -210,9 +210,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{urlRemote}}/tarefas?data={{date}}",
+							"raw": "{{url}}/tarefas?data={{date}}",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"tarefas"
@@ -272,9 +272,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{urlRemote}}/tarefa/add",
+							"raw": "{{url}}/tarefa/add",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"tarefa",
@@ -353,9 +353,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{urlRemote}}/tarefa/editar/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MmZkM2YxOWY0MDc4OTViMTg3YjY5NiIsImlhdCI6MTczMzUyNjM2OCwiZXhwIjoxNzMzNTI5OTY4fQ.MHHX5E2xvHc4ubOzVSelOGDSDwSJZeJMnBLJfegj-As",
+							"raw": "{{url}}/tarefa/editar/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MmZkM2YxOWY0MDc4OTViMTg3YjY5NiIsImlhdCI6MTczMzUyNjM2OCwiZXhwIjoxNzMzNTI5OTY4fQ.MHHX5E2xvHc4ubOzVSelOGDSDwSJZeJMnBLJfegj-As",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"tarefa",
@@ -518,9 +518,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{urlRemote}}/tarefa/novo",
+							"raw": "{{url}}/tarefa/novo",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"tarefa",
@@ -641,9 +641,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{urlRemote}}/tarefa/deletar",
+							"raw": "{{url}}/tarefa/deletar",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"tarefa",
@@ -764,9 +764,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{urlRemote}}/tarefa/editar",
+							"raw": "{{url}}/tarefa/editar",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"tarefa",
@@ -864,9 +864,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{urlRemote}}/usuarios/registro/novo",
+							"raw": "{{url}}/usuarios/registro/novo",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"usuarios",
@@ -916,9 +916,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{urlRemote}}/usuarios/registro",
+							"raw": "{{url}}/usuarios/registro",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"usuarios",
@@ -948,9 +948,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{urlRemote}}/usuarios/login",
+							"raw": "{{url}}/usuarios/login",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"usuarios",
@@ -1014,9 +1014,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{urlRemote}}/usuarios/logout",
+							"raw": "{{url}}/usuarios/logout",
 							"host": [
-								"{{urlRemote}}"
+								"{{url}}"
 							],
 							"path": [
 								"usuarios",
