@@ -23,17 +23,32 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' #
+          node-version: '20'
 
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
         run: npm install
-      
-      # Etapa 4: Executar testes Cypress
+
+      # Etapa 4: Iniciar servidor local
+      - name: Start local server
+        run: npm run start & # Inicia o servidor em segundo plano
+        env:
+          NODE_ENV: test  # Define o ambiente como teste
+
+      # Etapa 5: Verificar se o servidor está em execução
+      - name: Wait for server to be ready
+        run: |
+          echo "Waiting for server to start..."
+          for i in {1..10}; do
+            curl -s http://localhost:8081 && break || sleep 3
+          done
+          echo "Server is up and running!"
+
+      # Etapa 6: Executar testes Cypress
       - name: Run Cypress tests
         run: npx cypress run --spec "cypress/e2e/taskapp/*"
 
-      # Etapa 5: Configurar conexão com MongoDB local e rodar os testes
+      # Etapa 7: Configurar conexão com MongoDB local e rodar os testes
       - name: Run tests with local MongoDB
         run: |
           echo "Setting up MongoDB URI..."
@@ -41,16 +56,8 @@ jobs:
           echo "Running tests with local MongoDB..."
           npm run test-api  # Comando para rodar os testes no código do projeto
         env:
-          NODE_ENV: test  # Ambiente de testes
-          MONGO_URI: mongodb://localhost:27017/taskapp  # URI local do MongoDB
-
-      # Etapa 6: Confirmar se o servidor local está acessível antes de rodar os testes
-      - name: Confirm local server connection
-        run: |
-          echo "Checking connection to local server..."
-          curl -I http://localhost:8081 || exit 1  # Verificar se o servidor local está acessível
-        env:
-          SERVER_URL: http://localhost:8081  # URL do servidor local
+          NODE_ENV: test
+          MONGO_URI: mongodb://localhost:27017/taskapp
 
   deploy:
     needs: test
