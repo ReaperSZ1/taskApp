@@ -1,4 +1,4 @@
-// npx cypress run --spec "cypress\e2e\taskapp\*"
+// npx cypress run --headed --spec "cypress\e2e\taskapp\*"
 // const url = 'https://taskapp-481i.onrender.com'
 const url = 'http://localhost:8081'
 describe('index', () => {
@@ -19,7 +19,7 @@ describe('index', () => {
             cy.url().should('include', '/'); // check if you are at the correct url
             // click on the nova tarefa button in the navbar
             cy.get('#navbarNav').contains('Nova Tarefa').click()
-            cy.url().should('include', '/usuarios/login');
+            cy.url().should('include', '/usuarios/login'); 
             // click on the registro button in the navbar
             cy.get('#navbarNav').contains('Registro').click()
             cy.url().should('include', '/usuarios/registro');
@@ -32,7 +32,6 @@ describe('index', () => {
             // submit
             cy.get('form > .btn').click()
             cy.get('.btn').should('be.visible').should('have.text', 'Sair')
-            // continue a partir daqui
         })
     });      
     describe('connected', () => {
