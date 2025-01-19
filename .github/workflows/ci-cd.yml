@@ -14,6 +14,12 @@ jobs:
   test:
     runs-on: ubuntu-latest # Máquina virtual para rodar os testes
 
+    env: # Configuração global para todas as etapas do job
+      MONGO_URI_DEV: ${{ secrets.MONGO_URI_DEV }}
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      NODE_ENV: development 
+
     steps:
       # Etapa 1: Fazer checkout do código
       - name: Checkout code
@@ -24,6 +30,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+        
+      - name: Start MongoDB
+        run: |
+          docker run -d --name mongodb -p 27017:27017 mongo:latest
 
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
@@ -32,9 +42,7 @@ jobs:
       # Etapa 4: Iniciar servidor local
       - name: Start local server
         run: npm run start & # Inicia o servidor em segundo plano
-        env:
-          NODE_ENV: test  # Define o ambiente como teste
-
+    
       # Etapa 5: Verificar se o servidor está em execução
       - name: Wait for server to be ready
         run: |
@@ -48,25 +56,27 @@ jobs:
       - name: Run Cypress tests
         run: npx cypress run --spec "cypress/e2e/taskapp/*"
 
-      # Etapa 7: Configurar conexão com MongoDB local e rodar os testes
-      - name: Run tests with local MongoDB
-        run: |
-          echo "Setting up MongoDB URI..."
-          export MONGO_URI=mongodb://localhost:27017/taskapp  # Configuração local para MongoDB
-          echo "Running tests with local MongoDB..."
-          npm run test-api  # Comando para rodar os testes no código do projeto
-        env:
-          NODE_ENV: test
-          MONGO_URI: mongodb://localhost:27017/taskapp
+      # Etapa 7: testes de integração
+      - name: Run integration tests
+        run: npm run test-api # Comando para rodar os testes no código do projeto
+        
+      # Etapa 8: Interrompe a execução do server
+      - name: Stop server
+        run: kill $(jobs -p)
 
   deploy:
     needs: test
     runs-on: ubuntu-latest
+
+    env:
+      RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+      SERVICE_ID: ${{ secrets.SERVICE_ID }}
+
     steps:
       - name: Trigger Render deploy
         run: |
           curl -X POST \
-            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{"clearCache":true}' \
-            https://api.render.com/v1/services/${{ secrets.SERVICE_ID }}/deploys
+            https://api.render.com/v1/services/$SERVICE_ID/deploys
