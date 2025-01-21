@@ -63,7 +63,6 @@
     app.get('/', (req, res) => {
         const isLoggedIn = req.isAuthenticated() 
         res.setHeader('Content-Type', 'text/html');
-        res.sendFile(path.join(__dirname, 'public', 'index.html'));
         res.status(200).render('index', { isLoggedIn })
     })
     app.get('/tarefas', isAuthenticated, async (req, res) => {
