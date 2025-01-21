@@ -9,5 +9,6 @@ module.exports = defineConfig({
     },
     pageLoadTimeout: 30000, 
     browser: 'chrome', 
+    video: true,
   },
 });

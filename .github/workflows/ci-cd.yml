@@ -54,8 +54,8 @@ jobs:
 
       # Etapa 6: Executar testes Cypress
       - name: Run Cypress tests
-        run: npx cypress run --spec "cypress/e2e/taskapp/*"
-
+        run: npx cypress run --headed--browser chrome  --spec "cypress/e2e/taskapp/*"
+        
       # Etapa 7: testes de integração
       - name: Run integration tests
         run: npm run test-api # Comando para rodar os testes no código do projeto
