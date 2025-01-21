@@ -54,7 +54,7 @@ jobs:
 
       # Etapa 6: Executar testes Cypress
       - name: Run Cypress tests
-        run: npx cypress run --record --key 4afe7203-adc6-4ed7-ace6-25051ab3bce2 --browser chrome  --spec "cypress/e2e/taskapp/*"
+        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome  --spec "cypress/e2e/taskapp/*"
         
       # Etapa 7: testes de integração
       - name: Run integration tests

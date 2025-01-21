@@ -7,6 +7,7 @@ module.exports = defineConfig({
       require('cypress-mochawesome-reporter/plugin')(on);
       return config;
     },
+    projectId: "19uf39",
     pageLoadTimeout: 30000, 
     browser: 'chrome', 
     video: true,
