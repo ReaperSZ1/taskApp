@@ -31,9 +31,9 @@ jobs:
         with:
           node-version: '20'
         
-      # - name: Start MongoDB
-      #   run: |
-      #     docker run -d --name mongodb -p 8081:27017 mongo:latest
+      - name: Start MongoDB
+        run: |
+          docker run -d --name mongodb -p 8081:27017 mongo:latest
         
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
