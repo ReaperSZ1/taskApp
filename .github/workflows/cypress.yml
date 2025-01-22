@@ -14,44 +14,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install lsof (if not already installed)
-        run: sudo apt-get update && sudo apt-get install -y lsof
-
-      - name: Stop any running servers
-        run: |
-          echo "Verificando se há algum servidor em execução na porta 8081..."
-          # Listar processos com lsof na porta 8081
-          lsof -i:8081 || true
-          # Atribuir o PID
-          PID=$(lsof -t -i:8081)
-          echo "PID encontrado: $PID"
-          # Verificar se o PID foi encontrado
-          if [ ! -z "$PID" ]; then
-            echo "Matando processo com PID $PID"
-            kill -9 $PID || true
-          else
-            echo "Nenhum processo encontrado na porta 8081"
-          fi
-          
-      - name: Start MongoDB
-        run: |
-          docker run -d --name mongodb -p 8081:27017 mongo:latest
       - name: Cypress run
-        # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6
         with:
-          # Starts web server for E2E tests - replace with your own server invocation
-          # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
           start: npm run start
           wait-on: 'http://localhost:8081' # Waits for above
-          # Records to Cypress Cloud 
-          # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
           record: true
           parallel: true # Runs test in parallel using settings above
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MONGO_URI_DEV: ${{ secrets.MONGO_URI_DEV }}
+          MONGO_URI_PROD: ${{ secrets.MONGO_URI_PROD }}
           SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           NODE_ENV: development 

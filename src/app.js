@@ -101,7 +101,7 @@
 // Server initialization
     const PORT = process.env.PORT || 8081 
     app.listen(PORT, () => { 
-        if(PORT == 8081)
+        if(PORT == 8081 && process.env.NODE_ENV === 'development')
             console.log('Server ON => LocalHost');
         else 
             console.log('Server ON => Remote');
