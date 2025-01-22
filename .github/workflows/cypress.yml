@@ -13,12 +13,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
+      - name: Install lsof (if not already installed)
+        run: sudo apt-get update && sudo apt-get install -y lsof
+
       - name: Stop any running servers
         run: |
+          echo "Checking for any running server on port 8081..."
           PID=$(lsof -t -i:8081)
+          echo "Found PID: $PID"
           if [ ! -z "$PID" ]; then
+            echo "Killing process with PID $PID"
             kill -9 $PID || true
+          else
+            echo "No process found on port 8081"
           fi
+
       - name: Start MongoDB
         run: |
           docker run -d --name mongodb -p 8081:27017 mongo:latest
