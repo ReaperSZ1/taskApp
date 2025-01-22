@@ -40,7 +40,14 @@ jobs:
         run: npm install
 
       - name: Stop any running servers
-        run: kill $(lsof -t -i:8081) || true
+        run: |
+          PID=$(lsof -t -i:8081)
+          if [ ! -z "$PID" ]; then
+            kill -9 $PID
+          fi
+      
+      - name: Wait for the port to be freed
+        run: sleep 3  # Ajuste o tempo conforme necessário
 
       # Etapa 4: Iniciar servidor local
       - name: Start local server
@@ -62,6 +69,10 @@ jobs:
       # Etapa 7: testes de integração
       - name: Run integration tests
         run: npm run test-api # Comando para rodar os testes no código do projeto
+        
+      # Etapa 8: Interrompe a execução do server
+      - name: Stop server
+        run: kill $(jobs -p)
 
   deploy:
     needs: test
