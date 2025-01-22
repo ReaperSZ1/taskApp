@@ -1,4 +1,4 @@
-// npx cypress run --headed --spec "cypress\e2e\taskapp\*"
+// npx cypress run --browser chrome --headed --spec "cypress\e2e\*"
 // const url = 'https://taskapp-481i.onrender.com'
 const url = 'http://localhost:8081'
 describe('index', () => {

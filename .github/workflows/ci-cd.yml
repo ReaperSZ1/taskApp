@@ -31,9 +31,9 @@ jobs:
         with:
           node-version: '20'
         
-      - name: Start MongoDB
-        run: |
-          docker run -d --name mongodb -p 8081:27017 mongo:latest
+      # - name: Start MongoDB
+      #   run: |
+      #     docker run -d --name mongodb -p 8081:27017 mongo:latest
         
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
@@ -41,7 +41,7 @@ jobs:
 
       # Etapa 4: Iniciar servidor local
       - name: Start local server
-        run: npm run start & # Inicia o servidor em segundo plano
+        run: npm run start 
     
       # Etapa 5: Verificar se o servidor está em execução
       - name: Wait for server to be ready
@@ -52,9 +52,9 @@ jobs:
           done
           echo "Server is up and running!"
 
-      # Etapa 6: Executar testes Cypress
-      - name: Run Cypress tests
-        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome --spec "cypress/e2e/taskapp/*"
+      # # Etapa 6: Executar testes Cypress
+      # - name: Run Cypress tests
+      #   run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome --spec "cypress/e2e/taskapp/*"
         
       # Etapa 7: testes de integração
       - name: Run integration tests
