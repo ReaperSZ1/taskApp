@@ -39,6 +39,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Stop any running servers
+        run: kill $(lsof -t -i:8081) || true
+
       # Etapa 4: Iniciar servidor local
       - name: Start local server
         run: npm run start 
@@ -59,10 +62,6 @@ jobs:
       # Etapa 7: testes de integração
       - name: Run integration tests
         run: npm run test-api # Comando para rodar os testes no código do projeto
-        
-      # Etapa 8: Interrompe a execução do server
-      - name: Stop server
-        run: kill $(jobs -p)
 
   deploy:
     needs: test
