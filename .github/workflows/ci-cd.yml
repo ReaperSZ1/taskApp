@@ -18,7 +18,7 @@ jobs:
       MONGO_URI_PROD: ${{ secrets.MONGO_URI_PROD }}
       SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      NODE_ENV: development 
+      NODE_ENV: production 
 
     steps:
       # Etapa 1: Fazer checkout do código
