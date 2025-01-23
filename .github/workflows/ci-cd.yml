@@ -44,9 +44,6 @@ jobs:
       - name: Install system dependencies # dependência do Chrome em ambientes Linux
         run: sudo apt-get install -y libgbm-dev
 
-      - name: Install Chrome dependencies
-        run: sudo apt-get install -y libnss3 libxss1 libasound2 libx11-xcb-dev libxtst6
-
       # Etapa 4: Iniciar servidor local
       - name: Start local server
         run: npm run start &
