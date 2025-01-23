@@ -37,7 +37,7 @@ jobs:
 
       # Etapa 4: Iniciar servidor local
       - name: Start local server
-        run: npm run start 
+        run: npm run start &
     
       # Etapa 5: Verificar se o servidor está em execução
       - name: Wait for server to be ready
