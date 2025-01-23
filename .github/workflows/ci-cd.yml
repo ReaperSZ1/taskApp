@@ -36,7 +36,10 @@ jobs:
         run: npm install
 
       - name: Install Cypress
-        run: npm install cypress@13.0.0
+        run: npm install cypress@latest --save-dev
+
+      - name: Install system dependencies # dependência do Chrome em ambientes Linux
+        run: sudo apt-get install -y libgbm-dev
 
       # Etapa 4: Iniciar servidor local
       - name: Start local server
@@ -53,7 +56,7 @@ jobs:
 
       # Etapa 6: Executar testes Cypress
       - name: Run Cypress tests
-        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome --spec "cypress/e2e/*"
+        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome --headless --spec "cypress/e2e/*"
         
       # Etapa 7: testes de integração
       - name: Run integration tests
