@@ -52,7 +52,6 @@ jobs:
             libxkbcommon0 \
             libgbm-dev \
             libasound2 \
-            liboss4-salsa-asound2 \
             libpangocairo-1.0-0 \
             libpango-1.0-0
 
