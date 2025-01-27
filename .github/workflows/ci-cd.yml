@@ -45,7 +45,7 @@ jobs:
 
       # Etapa 6: Executar testes Cypress
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v6
         with:
           record: true
         env:
