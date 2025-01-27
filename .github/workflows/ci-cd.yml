@@ -54,7 +54,6 @@ jobs:
         env:
             ELECTRON_DISABLE_GPU: "true"
             ELECTRON_SKIP_WATCHDOG: "true"
-            DISPLAY: ":99"
         run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser electron --headless --spec "cypress/e2e/taskapp" 
         
       # Etapa 7: testes de integração
