@@ -34,15 +34,26 @@ jobs:
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
         run: npm install
-
+      
       - name: Install Cypress
         run: npm install cypress@latest --save-dev
 
       - name: Verify Cypress installation
         run: npx cypress verify
 
-      - name: Install system dependencies # dependência do Chrome em ambientes Linux
-        run: sudo apt-get install -y libgbm-dev
+      - name: Install system dependencies
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y \
+              libnss3 \
+              libatk1.0-0 \
+              libatk-bridge2.0-0 \
+              libcups2 \
+              libxkbcommon0 \
+              libgbm-dev \
+              libasound2 \
+              libpangocairo-1.0-0 \
+              libpango-1.0-0
 
       # Etapa 4: Iniciar servidor local
       - name: Start local server
@@ -50,12 +61,7 @@ jobs:
     
       # Etapa 5: Verificar se o servidor está em execução
       - name: Wait for server to be ready
-        run: |
-          echo "Waiting for server to start..."
-          for i in {1..5}; do
-            curl -s http://localhost:8081/ && break || sleep 3
-          done
-          echo "Server is up and running!"
+        run: npx wait-on http://localhost:8081
 
       # Etapa 6: Executar testes Cypress
       - name: Run Cypress tests
