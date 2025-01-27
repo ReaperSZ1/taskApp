@@ -34,7 +34,10 @@ jobs:
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
         run: npm install
-      
+          
+      - name: Verificar instalação do Cypress
+        run: npm list cypress
+
       # Etapa 4: Iniciar servidor local
       - name: Start local server
         run: npm run start &
@@ -43,8 +46,7 @@ jobs:
       - name: Wait for server to be ready
         run: npx wait-on http://localhost:8081
 
-      - name: Verificar instalação do Cypress
-        run: npm list cypress
+      
 
       # Etapa 6: Executar testes Cypress
       - name: Run Cypress tests
