@@ -36,7 +36,7 @@ jobs:
         run: npm install
         
       - name: Install cypress
-        run: npm install cypress --save-dev
+        run: npm install -g cypress
 
       - name: Verificar instalação do Cypress
         run: npm list cypress
