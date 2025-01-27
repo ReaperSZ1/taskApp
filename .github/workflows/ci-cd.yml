@@ -12,7 +12,8 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest # Máquina virtual para rodar os testes
+    runs-on: ubuntu-20.04
+
 
     env: # Configuração global para todas as etapas do job
       MONGO_URI_PROD: ${{ secrets.MONGO_URI_PROD }}
@@ -49,19 +50,19 @@ jobs:
           sudo add-apt-repository universe
           sudo apt-get update
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libnss3 \
-            libatk1.0-0 \
-            libatk-bridge2.0-0 \
-            libcups2 \
-            libxkbcommon0 \
-            libgbm-dev \
-            liboss4-salsa-asound2 \
-            libpangocairo-1.0-0 \
-            libpango-1.0-0
+          - name: Install system dependencies
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y \
+              libnss3 \
+              libatk1.0-0 \
+              libatk-bridge2.0-0 \
+              libcups2 \
+              libxkbcommon0 \
+              libgbm-dev \
+              libasound2 \
+              libpangocairo-1.0-0 \
+              libpango-1.0-0        
 
       # Etapa 4: Iniciar servidor local
       - name: Start local server
