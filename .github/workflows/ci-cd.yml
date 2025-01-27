@@ -43,18 +43,11 @@ jobs:
       - name: Wait for server to be ready
         run: npx wait-on http://localhost:8081
 
-      - name: Clear npm cache
-        run: npm cache clean --force
-
-      - name: Disable Cypress cache
-        run: npx cypress cache clear
-        
       # Etapa 6: Executar testes Cypress
       - name: Run Cypress tests
         uses: cypress-io/github-action@v4
         with:
           record: true
-          spec: "cypress/e2e/taskapp" 
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         
