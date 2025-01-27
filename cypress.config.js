@@ -9,7 +9,6 @@ module.exports = defineConfig({
     },
     projectId: "19uf39",
     pageLoadTimeout: 30000, 
-    browser: 'chrome', 
     video: disable
   },
 });
