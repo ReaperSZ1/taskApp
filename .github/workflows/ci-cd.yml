@@ -33,7 +33,7 @@ jobs:
         
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       
       - name: Install Cypress
         run: npm install cypress@latest --save-dev
@@ -69,7 +69,7 @@ jobs:
         env:
           ELECTRON_DISABLE_GPU: "true"
           ELECTRON_SKIP_WATCHDOG: "true"
-        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome --headless --disable-gpu --spec "cypress/e2e/taskapp"
+        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome --headless --spec "cypress/e2e/taskapp" --config --browser-args="--disable-gpu"
         
       # Etapa 7: testes de integração
       - name: Run integration tests
