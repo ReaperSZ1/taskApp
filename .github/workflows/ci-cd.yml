@@ -40,29 +40,7 @@ jobs:
         run: npm install cypress@latest --save-dev
 
       - name: Verify Cypress installation
-        run: npx cypress verify
-
-      - name: Add required repositories
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y software-properties-common
-          sudo add-apt-repository main
-          sudo add-apt-repository universe
-          sudo apt-get update
-
-          - name: Install system dependencies
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y \
-              libnss3 \
-              libatk1.0-0 \
-              libatk-bridge2.0-0 \
-              libcups2 \
-              libxkbcommon0 \
-              libgbm-dev \
-              libasound2 \
-              libpangocairo-1.0-0 \
-              libpango-1.0-0        
+        run: npx cypress verify      
 
       # Etapa 4: Iniciar servidor local
       - name: Start local server
@@ -74,7 +52,7 @@ jobs:
 
       # Etapa 6: Executar testes Cypress
       - name: Run Cypress tests
-        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser chrome --headless --spec "cypress/e2e/taskapp" --config --browser-args="--disable-gpu"
+        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser electron --headless --spec "cypress/e2e/taskapp" 
         
       # Etapa 7: testes de integração
       - name: Run integration tests
