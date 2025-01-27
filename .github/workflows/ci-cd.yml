@@ -41,6 +41,14 @@ jobs:
       - name: Verify Cypress installation
         run: npx cypress verify
 
+      - name: Add required repositories
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y software-properties-common
+          sudo add-apt-repository main
+          sudo add-apt-repository universe
+          sudo apt-get update
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -51,7 +59,7 @@ jobs:
             libcups2 \
             libxkbcommon0 \
             libgbm-dev \
-            libasound2 \
+            liboss4-salsa-asound2 \
             libpangocairo-1.0-0 \
             libpango-1.0-0
 
