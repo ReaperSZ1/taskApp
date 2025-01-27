@@ -33,22 +33,8 @@ jobs:
         
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
-        run: npm ci
-
-      - name: Install Xvfb
-        run: sudo apt-get install -y xvfb
-
-      - name: Start Xvfb
-        run: |
-          Xvfb :99 -screen 0 1920x1080x16 &
-          export DISPLAY=:99
+        run: npm install
       
-      - name: Install Cypress
-        run: npm install cypress@latest --save-dev
-
-      - name: Verify Cypress installation
-        run: npx cypress verify      
-
       # Etapa 4: Iniciar servidor local
       - name: Start local server
         run: npm run start &
@@ -59,10 +45,12 @@ jobs:
 
       # Etapa 6: Executar testes Cypress
       - name: Run Cypress tests
+        uses: cypress-io/github-action@v4
+        with:
+          record: true
+          spec: "cypress/e2e/taskapp" 
         env:
-            ELECTRON_DISABLE_GPU: "true"
-            ELECTRON_SKIP_WATCHDOG: "true"
-        run: npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --browser electron --headless --spec "cypress/e2e/taskapp" 
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         
       # Etapa 7: testes de integração
       - name: Run integration tests
