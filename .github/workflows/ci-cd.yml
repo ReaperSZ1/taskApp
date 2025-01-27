@@ -34,7 +34,10 @@ jobs:
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
         run: npm install
-          
+        
+      - name: Install cypress
+        run: npm install cypress --save-dev
+
       - name: Verificar instalação do Cypress
         run: npm list cypress
 
