@@ -571,7 +571,7 @@
 							"script": {
 								"exec": [
 									"pm.sendRequest({\r",
-									"    url: 'https://taskapp-481i.onrender.com/tarefas?data=2024-12-12',\r",
+									"    url: 'https://localhost:8081/tarefas?data=2024-12-12',\r",
 									"    method: 'GET',\r",
 									"    headers: {\r",
 									"        Cookie: pm.environment.get('CookieAuth') \r",
