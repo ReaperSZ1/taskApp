@@ -30,26 +30,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.12.2'
-
-      
-        
-        
-      # # Etapa 3: Instalar dependências do projeto
-      # - name: Install dependencies
-      #   run: npm install
-
-      - name: Remove node_modules
-        run: rm -rf node_modules
-      # **Etapa 4: Instalar Cypress**
-      - name: Install Cypress
-        run: npm install cypress --save-dev
-
-      - name: Debug Installation
-        run: |
-          npm list cypress
-          ls node_modules/cypress || echo "Cypress not found"
-          cat package.json
-      
+ 
+      # Etapa 3: Instalar dependências do projeto
+      - name: Install dependencies
+        run: npm install
 
       # Etapa 4: Iniciar servidor local
       - name: Start local server
@@ -59,18 +43,6 @@ jobs:
       - name: Wait for server to be ready
         run: npx wait-on http://localhost:8081
 
-      # # Etapa 7: Executar testes Cypress manualmente
-      # - name: Run Cypress tests manually
-      #   run: npx cypress run --spec "cypress\e2e\taskapp"
-
-      # # Etapa 6: Executar testes Cypress
-      # - name: Run Cypress tests
-      #   uses: cypress-io/github-action@v6
-        # with:
-        #   record: true
-        # env:
-        #   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-        
       # Etapa 7: testes de integração
       - name: Run integration tests
         run: npm run test-api # Comando para rodar os testes no código do projeto
