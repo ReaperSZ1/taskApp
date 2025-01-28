@@ -14,11 +14,7 @@ jobs:
   test:
     runs-on: ubuntu-24.04
 
-    env: # Configuração global para todas as etapas do job
-      MONGO_URI_PROD: ${{ secrets.MONGO_URI_PROD }}
-      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      NODE_ENV: production 
+
 
     steps:
       # Etapa 1: Fazer checkout do código
@@ -36,8 +32,13 @@ jobs:
         run: npm install
 
       # Etapa 4: Iniciar servidor local
-      - name: Start local server
+      - name: Start Application
         run: npm run start &
+        env:
+          MONGO_URI_PROD: ${{ secrets.MONGO_URI_PROD }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          NODE_ENV: production 
     
       # Etapa 5: Verificar se o servidor está em execução
       - name: Wait for server to be ready
