@@ -45,12 +45,6 @@ jobs:
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
         run: npm install
-      
-      - name: Debug Installation
-        run: |
-          npm list cypress
-          ls node_modules/cypress || echo "Cypress not found"
-          cat package.json
 
       # **Etapa 4: Instalar Cypress**
       - name: Install Cypress
