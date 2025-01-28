@@ -30,6 +30,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+
+      - name: Clean npm cache
+        run: npm cache clean --force
+        
         
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
@@ -51,7 +55,7 @@ jobs:
 
       # Etapa 7: Executar testes Cypress manualmente
       - name: Run Cypress tests manually
-        run: npx cypress run
+        run: npx cypress run --spec "cypress\e2e\*"
       # # Etapa 6: Executar testes Cypress
       # - name: Run Cypress tests
       #   uses: cypress-io/github-action@v6
