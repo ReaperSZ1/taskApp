@@ -31,16 +31,30 @@ jobs:
         with:
           node-version: '20.12.2'
 
-      # - name: Clean npm cache
-      #   run: npm cache clean --force
-        
-      # Etapa 3: Instalar dependências do projeto
-      - name: Install dependencies
-        run: npm install
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
+      - name: Clean npm cache
+        run: npm cache clean --force
+        
+      # # Etapa 3: Instalar dependências do projeto
+      # - name: Install dependencies
+      #   run: npm install
+      
+      - name: Debug Installation
+        run: |
+          npm list cypress
+          ls node_modules/cypress || echo "Cypress not found"
+          cat package.json
+          
       # **Etapa 4: Instalar Cypress**
       - name: Install Cypress
-        run: npm install cypress@12.17.1 --save-dev --loglevel verbose --force
+        run: npm install cypress --save-dev
 
       - name: Debug Installation
         run: |
