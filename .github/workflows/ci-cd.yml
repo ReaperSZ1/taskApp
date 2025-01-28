@@ -12,7 +12,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     env: # Configuração global para todas as etapas do job
       MONGO_URI_PROD: ${{ secrets.MONGO_URI_PROD }}
@@ -23,7 +23,7 @@ jobs:
     steps:
       # Etapa 1: Fazer checkout do código
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Etapa 2: Configurar Node.js
       - name: Setup Node.js
