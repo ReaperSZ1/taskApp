@@ -13,9 +13,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-24.04
-
-
-
     steps:
       # Etapa 1: Fazer checkout do código
       - name: Checkout code

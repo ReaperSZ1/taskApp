@@ -514,6 +514,24 @@
 									"value": "{{$randomLoremSentences}}",
 									"type": "text",
 									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "delete",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "jooj",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "date",
+									"value": "2025-01-12",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
