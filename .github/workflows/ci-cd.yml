@@ -31,30 +31,31 @@ jobs:
         with:
           node-version: '20.12.2'
 
-      - name: Clean npm cache
-        run: npm cache clean --force
+      # - name: Clean npm cache
+      #   run: npm cache clean --force
         
       # Etapa 3: Instalar dependências do projeto
       - name: Install dependencies
         run: npm install
-      # **Etapa 4: Instalar Cypress**
-      - name: Install Cypress
-        run: npm install cypress --save-dev
+      # # **Etapa 4: Instalar Cypress**
+      # - name: Install Cypress
+      #   run: npm install cypress --save-dev
 
-        # Etapa 4.1: Verificar instalação do Cypress
-      - name: Verify Cypress installation
-        run: npm list cypress
-      # # Etapa 4: Iniciar servidor local
-      # - name: Start local server
-      #   run: npm run start &
+      #   # Etapa 4.1: Verificar instalação do Cypress
+      # - name: Verify Cypress installation
+      #   run: npm list cypress
+
+      # Etapa 4: Iniciar servidor local
+      - name: Start local server
+        run: npm run start &
     
-      # # Etapa 5: Verificar se o servidor está em execução
-      # - name: Wait for server to be ready
-      #   run: npx wait-on http://localhost:8081
+      # Etapa 5: Verificar se o servidor está em execução
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:8081
 
-      # Etapa 7: Executar testes Cypress manualmente
-      - name: Run Cypress tests manually
-        run: npx cypress run --spec "cypress\e2e\taskapp"
+      # # Etapa 7: Executar testes Cypress manualmente
+      # - name: Run Cypress tests manually
+      #   run: npx cypress run --spec "cypress\e2e\taskapp"
       # # Etapa 6: Executar testes Cypress
       # - name: Run Cypress tests
       #   uses: cypress-io/github-action@v6
