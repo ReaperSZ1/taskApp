@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - coisa-nova
+      - main
   pull_request:
     branches:
       - main    
