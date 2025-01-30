@@ -251,10 +251,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.request.headers.add({\r",
-									"    key: \"Cookie\",\r",
-									"    value: pm.environment.get('CookieAuth')\r",
-									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript",
@@ -529,7 +526,7 @@
 								},
 								{
 									"key": "date",
-									"value": "2025-01-12",
+									"value": "2024-12-12",
 									"type": "text",
 									"disabled": true
 								}
@@ -589,7 +586,7 @@
 							"script": {
 								"exec": [
 									"pm.sendRequest({\r",
-									"    url: 'https://localhost:8081/tarefas?data=2024-12-13',\r",
+									"    url: 'http://localhost:8081/tarefas?data=2024-12-13',\r",
 									"    method: 'GET',\r",
 									"    headers: {\r",
 									"        Cookie: pm.environment.get('CookieAuth') \r",
