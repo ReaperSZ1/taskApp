@@ -1,30 +1,28 @@
-name: Cypress Tests
-on: [push]
+name: End-to-end tests
+on:
+  push:
+    branches:
+      - coisa-nova
+  pull_request:
+    branches:
+        - main    
+        - dependabot/** # Gatilho para PRs do Dependabot
+  workflow_dispatch: # Permite executar o pipeline manualmente
+
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest
-    # Runs tests in parallel with matrix strategy https://docs.cypress.io/guides/guides/parallelization
-    # https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
-    # Also see warning here https://github.com/cypress-io/github-action#parallel
-    strategy:
-      fail-fast: false # https://github.com/cypress-io/github-action/issues/48
-      matrix:
-        containers: [1, 2] # Uses 2 parallel instances
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+        # Iniciar servidor local
+      - name: Start local server
+        run: npm run start &
+
+        # Verificar se o servidor está em execução
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:8081
+            
       - name: Cypress run
         uses: cypress-io/github-action@v6
-        with:
-          start: npm run start &
-          wait-on: 'http://localhost:8081' # Waits for above
-          record: true
-          parallel: true # Runs test in parallel using settings above
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MONGO_URI_PROD: ${{ secrets.MONGO_URI_PROD }}
-          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          NODE_ENV: production 

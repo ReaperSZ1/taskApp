@@ -251,10 +251,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"pm.request.headers.add({\r",
-									"    key: \"Cookie\",\r",
-									"    value: pm.environment.get('CookieAuth')\r",
-									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript",
@@ -514,6 +511,24 @@
 									"value": "{{$randomLoremSentences}}",
 									"type": "text",
 									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "delete",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "jooj",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "date",
+									"value": "2024-12-12",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -571,7 +586,7 @@
 							"script": {
 								"exec": [
 									"pm.sendRequest({\r",
-									"    url: 'http://taskapp-481i.onrender.com/tarefas?data=2024-12-12',\r",
+									"    url: 'http://localhost:8081/tarefas?data=2024-12-13',\r",
 									"    method: 'GET',\r",
 									"    headers: {\r",
 									"        Cookie: pm.environment.get('CookieAuth') \r",
