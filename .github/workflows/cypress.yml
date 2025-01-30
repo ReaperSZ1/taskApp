@@ -19,6 +19,11 @@ jobs:
         # Iniciar servidor local
       - name: Start local server
         run: npm run start &
+        env:
+          MONGO_URI_PROD: ${{ secrets.MONGO_URI_PROD }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          NODE_ENV: production 
 
         # Verificar se o servidor está em execução
       - name: Wait for server to be ready
