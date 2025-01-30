@@ -16,6 +16,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+        # Etapa 3: Instalar dependências do projeto
+      - name: Install dependencies
+        run: npm install
+
         # Iniciar servidor local
       - name: Start local server
         run: npm run start &
