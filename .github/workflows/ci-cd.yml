@@ -17,6 +17,8 @@ jobs:
       # Etapa 1: Fazer checkout do código
       - name: Checkout code
         uses: actions/checkout@v4
+        with: # usa os codigos da branch ao inves da main
+          ref: coisa-nova
 
       # Etapa 2: Configurar Node.js
       - name: Setup Node.js
