@@ -156,14 +156,13 @@
     "which": "^2.0.2",
     "wkx": "^0.5.0",
     "wordwrap": "^1.0.0",
-    "wrap-ansi": "^8.1.0",
+    "wrap-ansi": "^9.0.0",
     "wrap-ansi-cjs": "^7.0.0"
   },
   "scripts": {
     "test": "jest --coverage",
     "start": "node src/app.js",
-    "test-api": "newman run ./.github/postman/taskApp_Pipeline.postman_collection.json -e ./.github/postman/local.postman_environment.json --reporters cli,json,html --reporter-cli-show-verbose --reporter-json-export newman-report.json",
-    "play": "nodemon c:/nodejs/taskApp/src/app.js"
+    "test-api": "newman run ./.github/postman/taskApp_Pipeline.postman_collection.json -e ./.github/postman/local.postman_environment.json --reporters cli,json,html --reporter-cli-show-verbose --reporter-json-export newman-report.json"
   },
   "keywords": [],
   "author": "",
