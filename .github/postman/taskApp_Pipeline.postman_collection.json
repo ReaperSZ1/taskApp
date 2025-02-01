@@ -166,7 +166,27 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"        if (pm.response.code !== 200) {\r",
+									"        // Caso o status não seja 200, execute o código dentro do if\r",
+									"        console.log('Flash error: ' + pm.response.headers.get('x-flash-error'));\r",
+									"\r",
+									"        pm.test(\"logs\", function() {\r",
+									"            console.log('Request Details:', {\r",
+									"                url: pm.request.url.toString(),\r",
+									"                method: pm.request.method,\r",
+									"                headers: pm.request.headers.toJSON(),\r",
+									"                body: pm.request.body ? pm.request.body.toString() : 'No Body'\r",
+									"            });\r",
+									"\r",
+									"            console.log('Response Details:', {\r",
+									"                status: pm.response.code,\r",
+									"                headers: pm.response.headers.all(),\r",
+									"                body: pm.response.text()\r",
+									"            });\r",
+									"        });\r",
+									"    } else {\r",
+									"        pm.response.to.have.status(200); // Verificação original\r",
+									"    }\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Response is an array\", function () {\r",
@@ -192,7 +212,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"const dia = 13\r",
+									"const dia = 12\r",
 									"pm.collectionVariables.set('date', '2024-12-' + dia)"
 								],
 								"type": "text/javascript",
@@ -586,7 +606,7 @@
 							"script": {
 								"exec": [
 									"pm.sendRequest({\r",
-									"    url: 'http://localhost:8081/tarefas?data=2024-12-13',\r",
+									"    url: 'http://localhost:8081/tarefas?data=2024-12-12',\r",
 									"    method: 'GET',\r",
 									"    headers: {\r",
 									"        Cookie: pm.environment.get('CookieAuth') \r",

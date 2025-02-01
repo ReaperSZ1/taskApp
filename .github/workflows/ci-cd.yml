@@ -12,7 +12,7 @@ on:
   workflow_dispatch: # Permite executar o pipeline manualmente
 
 jobs:
-  test:
+  test-integration:
     runs-on: ubuntu-24.04
     steps:
       # Etapa 1: Fazer checkout do código
@@ -47,13 +47,35 @@ jobs:
       # Etapa 7: testes de integração
       - name: Run integration tests
         run: npm run test-api # Comando para rodar os testes no código do projeto
-        
-      # Etapa 8: Interrompe a execução do server
-      - name: Stop server
-        run: kill $(jobs -p)
+
+  test-e2e:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+        # Etapa 3: Instalar dependências do projeto
+      - name: Install dependencies
+        run: npm install
+
+        # Iniciar servidor local
+      - name: Start local server
+        run: npm run start &
+        env:
+          MONGO_URI_PROD: ${{ secrets.MONGO_URI_PROD }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          NODE_ENV: production 
+
+        # Verificar se o servidor está em execução
+      - name: Wait for server to be ready
+        run: npx wait-on http://localhost:8081
+            
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
 
   deploy:
-    needs: test
+    needs: [test-integration, test-e2e] 
     runs-on: ubuntu-latest
 
     env:
