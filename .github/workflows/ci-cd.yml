@@ -47,7 +47,7 @@ jobs:
       # Etapa 7: testes de integração
       - name: Run integration tests
         run: npm run test-api # Comando para rodar os testes no código do projeto
-        
+
   cypress-run:
     runs-on: ubuntu-24.04
     steps:
@@ -75,7 +75,7 @@ jobs:
         uses: cypress-io/github-action@v6
 
   deploy:
-    needs: test
+    needs: [test, cypress-run] 
     runs-on: ubuntu-latest
 
     env:
