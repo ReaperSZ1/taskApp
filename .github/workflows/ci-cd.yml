@@ -12,7 +12,7 @@ on:
   workflow_dispatch: # Permite executar o pipeline manualmente
 
 jobs:
-  test:
+  test-integration:
     runs-on: ubuntu-24.04
     steps:
       # Etapa 1: Fazer checkout do código
@@ -48,7 +48,7 @@ jobs:
       - name: Run integration tests
         run: npm run test-api # Comando para rodar os testes no código do projeto
 
-  cypress-run:
+  test-e2e:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -75,7 +75,7 @@ jobs:
         uses: cypress-io/github-action@v6
 
   deploy:
-    needs: [test, cypress-run] 
+    needs: [test-integration, test-e2e] 
     runs-on: ubuntu-latest
 
     env:
