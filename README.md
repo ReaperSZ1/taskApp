@@ -1,7 +1,4 @@
 # TaskApp
-> Status: Finished ✔️
-
-## Description
 The **TaskApp** is a task management application that enables CRUD operations with advanced features like authentication, security, automated testing, and Continuous Integration/Continuous Delivery (CI/CD).
 
 ## Access Application
@@ -45,7 +42,3 @@ You can access the application hosted on Render at the following link: [https://
 - Secure authentication with Passport (local strategy).
 - Best security practices, such as sanitization, XSS prevention (Helmet), and data validation.
 - Deploying to Render.
-
-## Contributions
-Contributions are welcome! If you find any bugs or have suggestions for improvements, feel free to open a pull request.
-
