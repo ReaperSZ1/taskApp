@@ -7,7 +7,7 @@
     const passport = require('passport');
     require('./config/auth')(passport)
     require('dotenv').config();
- // Config
+    // Config
     const connectDB = require('./config/db');
     const sessionConfig = require('./config/session');
     const helmetConfig = require('./config/helmet');
